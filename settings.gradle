@@ -14,5 +14,5 @@ include 'shared'
 include 'api'
 include 'services:webservice'
 */
+include ':manager'
 
-rootProject.name = 'work-store'
