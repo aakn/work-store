@@ -1,14 +1,14 @@
 allprojects {
-    apply plugin: 'idea'
-    apply plugin: 'java'
-    apply plugin: 'groovy'
-    group = 'com.aakn.workstore'
+  apply plugin: 'idea'
+  apply plugin: 'java'
+  apply plugin: 'groovy'
+  group = 'com.aakn.workstore'
 
-    idea {
-        module {
-            downloadSources = true
-        }
+  idea {
+    module {
+      downloadSources = true
     }
+  }
 }
 
 ext.mainClassName = 'com.aakn.workstore.manager.ManagerApplication'
@@ -16,17 +16,19 @@ ext.configFile = './config/development.yaml'
 apply from: file("gradle/common.gradle")
 
 subprojects {
-    dependencies {
-        compile "io.dropwizard:dropwizard-core:$dropwizardVersion"
-        compile "org.projectlombok:lombok:$lombokVersion"
-        compile "com.google.inject:guice:$guiceVersion"
-        compile "com.hubspot.dropwizard:dropwizard-guice:$dropwizardGuiceVersion"
+  dependencies {
+    compile "io.dropwizard:dropwizard-core:$dropwizardVersion"
+    compile "org.projectlombok:lombok:$lombokVersion"
+    compile "com.google.inject:guice:$guiceVersion"
+    compile "com.hubspot.dropwizard:dropwizard-guice:$dropwizardGuiceVersion"
+    compile "org.glassfish.jersey.media:jersey-media-json-jackson:2.25.1"
 
-        testCompile "io.dropwizard:dropwizard-testing:$dropwizardVersion"
-        testCompile "org.spockframework:spock-core:$spockVersion"
-    }
+    testCompile "cglib:cglib-nodep:3.2.5" // required for mocking in spock
+    testCompile "io.dropwizard:dropwizard-testing:$dropwizardVersion"
+    testCompile "org.spockframework:spock-core:$spockVersion"
+  }
 }
 
 task createWrapper(type: Wrapper) {
-    gradleVersion = '3.5'
+  gradleVersion = '3.5'
 }

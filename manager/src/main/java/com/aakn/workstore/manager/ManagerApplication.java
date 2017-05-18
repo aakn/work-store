@@ -1,5 +1,6 @@
 package com.aakn.workstore.manager;
 
+import com.aakn.workstore.batch.config.BatchModule;
 import com.aakn.workstore.manager.config.ApplicationConfiguration;
 import com.aakn.workstore.manager.config.ManagerModule;
 import com.hubspot.dropwizard.guice.GuiceBundle;
@@ -26,6 +27,7 @@ public class ManagerApplication extends Application<ApplicationConfiguration> {
     GuiceBundle<ApplicationConfiguration> guiceBundle =
         GuiceBundle.<ApplicationConfiguration>newBuilder()
             .addModule(new ManagerModule())
+            .addModule(new BatchModule())
             .setConfigClass(ApplicationConfiguration.class)
             .build();
     bootstrap.addBundle(guiceBundle);
