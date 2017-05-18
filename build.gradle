@@ -11,6 +11,20 @@ allprojects {
     }
 }
 
+apply from: file("gradle/common.gradle")
+
+subprojects {
+    dependencies {
+        compile "io.dropwizard:dropwizard-core:$dropwizardVersion"
+        compile "org.projectlombok:lombok:$lombokVersion"
+        compile "com.google.inject:guice:$guiceVersion"
+        compile "com.hubspot.dropwizard:dropwizard-guice:$dropwizardGuiceVersion"
+
+        testCompile "io.dropwizard:dropwizard-testing:$dropwizardVersion"
+        testCompile "org.spockframework:spock-core:$spockVersion"
+    }
+}
+
 task createWrapper(type: Wrapper) {
-    gradleVersion = '3.4.1'
+    gradleVersion = '3.5'
 }
