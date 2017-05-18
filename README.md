@@ -16,3 +16,11 @@ For the plugin to function correctly, please enable it under
 
 1. Spock (in Groovy)
 2. Dropwizard testing
+
+
+
+### How to start the application
+
+```bash
+./gradlew run
+```

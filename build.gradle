@@ -11,6 +11,8 @@ allprojects {
     }
 }
 
+ext.mainClassName = 'com.aakn.workstore.manager.ManagerApplication'
+ext.configFile = './config/development.yaml'
 apply from: file("gradle/common.gradle")
 
 subprojects {
