@@ -1,6 +1,9 @@
 package com.aakn.workstore.manager;
 
+import com.google.inject.Stage;
+
 import com.aakn.workstore.batch.config.BatchModule;
+import com.aakn.workstore.client.config.ExternalWorkClientModule;
 import com.aakn.workstore.manager.config.ApplicationConfiguration;
 import com.aakn.workstore.manager.config.ManagerModule;
 import com.hubspot.dropwizard.guice.GuiceBundle;
@@ -28,8 +31,9 @@ public class ManagerApplication extends Application<ApplicationConfiguration> {
         GuiceBundle.<ApplicationConfiguration>newBuilder()
             .addModule(new ManagerModule())
             .addModule(new BatchModule())
+            .addModule(new ExternalWorkClientModule())
             .setConfigClass(ApplicationConfiguration.class)
-            .build();
+            .build(Stage.DEVELOPMENT);
     bootstrap.addBundle(guiceBundle);
   }
 

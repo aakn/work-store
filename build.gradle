@@ -18,10 +18,13 @@ apply from: file("gradle/common.gradle")
 subprojects {
   dependencies {
     compile "io.dropwizard:dropwizard-core:$dropwizardVersion"
+    compile "io.dropwizard:dropwizard-client:$dropwizardVersion"
     compile "org.projectlombok:lombok:$lombokVersion"
     compile "com.google.inject:guice:$guiceVersion"
     compile "com.hubspot.dropwizard:dropwizard-guice:$dropwizardGuiceVersion"
     compile "org.glassfish.jersey.media:jersey-media-json-jackson:2.25.1"
+    compile "com.netflix.hystrix:hystrix-core:$hystrixVersion"
+    compile "com.fasterxml.jackson.dataformat:jackson-dataformat-xml:$jacksonVersion"
 
     testCompile "cglib:cglib-nodep:3.2.5" // required for mocking in spock
     testCompile "io.dropwizard:dropwizard-testing:$dropwizardVersion"

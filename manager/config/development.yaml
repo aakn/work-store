@@ -12,3 +12,7 @@ logging:
     com.aakn.workstore: DEBUG
   appenders:
     - type: console
+
+clientConfiguration:
+  minThreads: 1
+  maxThreads: 8

@@ -11,6 +11,7 @@ For the plugin to function correctly, please enable it under
 1. Dropwizard
 2. Lombok
 3. Guice
+4. Hystrix
 
 **Test Libraries**
 
