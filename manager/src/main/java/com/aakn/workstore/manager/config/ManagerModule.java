@@ -5,7 +5,11 @@ import com.google.inject.Provider;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 
+import org.hibernate.SessionFactory;
+
 import io.dropwizard.client.JerseyClientConfiguration;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 public class ManagerModule extends AbstractModule {
 
@@ -19,5 +23,11 @@ public class ManagerModule extends AbstractModule {
   public JerseyClientConfiguration providesClientConfiguration(
       Provider<ApplicationConfiguration> configuration) {
     return configuration.get().getClientConfiguration();
+  }
+
+  @Provides
+  @Singleton
+  public SessionFactory sessionFactory(CustomHibernateBundle hibernate) {
+    return checkNotNull(hibernate.getSessionFactory());
   }
 }

@@ -6,6 +6,7 @@ import com.aakn.workstore.batch.config.BatchModule;
 import com.aakn.workstore.client.config.ExternalWorkClientModule;
 import com.aakn.workstore.manager.config.ApplicationConfiguration;
 import com.aakn.workstore.manager.config.ManagerModule;
+import com.aakn.workstore.work.config.WorkModule;
 import com.hubspot.dropwizard.guice.GuiceBundle;
 
 import org.glassfish.jersey.logging.LoggingFeature;
@@ -36,8 +37,10 @@ public class ManagerApplication extends Application<ApplicationConfiguration> {
         GuiceBundle.<ApplicationConfiguration>newBuilder()
             .addModule(new ManagerModule())
             .addModule(new BatchModule())
+            .addModule(new WorkModule())
             .addModule(new ExternalWorkClientModule())
             .setConfigClass(ApplicationConfiguration.class)
+            .enableAutoConfig("com.aakn.workstore.manager.config")
             .build(Stage.DEVELOPMENT);
     bootstrap.addBundle(guiceBundle);
   }

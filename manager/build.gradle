@@ -1,4 +1,5 @@
 dependencies {
   compile project(":batch")
   compile project(":client")
+  compile project(":work")
 }
