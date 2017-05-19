@@ -8,6 +8,11 @@ import com.aakn.workstore.manager.config.ApplicationConfiguration;
 import com.aakn.workstore.manager.config.ManagerModule;
 import com.hubspot.dropwizard.guice.GuiceBundle;
 
+import org.glassfish.jersey.logging.LoggingFeature;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
@@ -41,5 +46,8 @@ public class ManagerApplication extends Application<ApplicationConfiguration> {
   public void run(ApplicationConfiguration configuration, Environment environment)
       throws Exception {
     log.info("Application has started!!");
+    environment.jersey().register(new LoggingFeature(Logger.getLogger(LoggingFeature.class.getName()),
+                                                     Level.INFO, LoggingFeature.Verbosity.PAYLOAD_ANY,
+                                                     30 * 1024));
   }
 }

@@ -8,6 +8,11 @@ import com.google.inject.Singleton;
 import com.aakn.workstore.client.ExternalWorkClient;
 import com.aakn.workstore.client.internal.HystrixExternalWorkClient;
 
+import org.glassfish.jersey.logging.LoggingFeature;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javax.ws.rs.client.Client;
 
 import io.dropwizard.client.JerseyClientBuilder;
@@ -25,8 +30,13 @@ public class ExternalWorkClientModule extends AbstractModule {
   @Singleton
   public Client providesClient(Provider<JerseyClientConfiguration> clientConfiguration,
                                Provider<Environment> environment) {
-    return new JerseyClientBuilder(environment.get())
+    Client client = new JerseyClientBuilder(environment.get())
         .using(clientConfiguration.get())
         .build("client");
+
+    client.register(new LoggingFeature(Logger.getLogger(LoggingFeature.class.getName()),
+                                       Level.INFO, LoggingFeature.Verbosity.PAYLOAD_ANY,
+                                       5 * 1024));
+    return client;
   }
 }

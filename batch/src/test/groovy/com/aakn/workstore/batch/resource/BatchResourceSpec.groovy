@@ -7,6 +7,8 @@ import io.dropwizard.testing.junit.ResourceTestRule
 import org.junit.Rule
 import spock.lang.Specification
 
+import javax.ws.rs.core.UriBuilder
+
 import static javax.ws.rs.client.Entity.json
 
 class BatchResourceSpec extends Specification {
@@ -25,7 +27,7 @@ class BatchResourceSpec extends Specification {
 
   def "should call the process request"() {
     setup:
-    def request = new BatchWorkRequest(url: "http://localhost/test", directory: "test")
+    def request = new BatchWorkRequest(url: UriBuilder.fromUri("http://localhost/test").build(), directory: "test")
 
     when:
     def response = resources.target("/works").request().post(json(request))

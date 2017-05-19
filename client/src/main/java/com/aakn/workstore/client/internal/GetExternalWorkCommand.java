@@ -36,6 +36,7 @@ public class GetExternalWorkCommand extends HystrixCommand<Works> implements Bas
 
   @Override
   protected Works run() throws Exception {
+    log.info("getting works from {}", uri.toString());
     Response response = client.target(uri)
         .request()
         .accept(MediaType.APPLICATION_XML_TYPE)
