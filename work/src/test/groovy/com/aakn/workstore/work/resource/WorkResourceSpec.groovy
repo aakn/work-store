@@ -1,9 +1,8 @@
 package com.aakn.workstore.work.resource
 
+import com.aakn.workstore.work.dto.WorksRequest
 import com.aakn.workstore.work.dto.WorksResponse
-import com.aakn.workstore.work.query.GetWorksForNamespaceAndMakeQuery
-import com.aakn.workstore.work.query.GetWorksForNamespaceMakeAndModelQuery
-import com.aakn.workstore.work.query.GetWorksForNamespaceQuery
+import com.aakn.workstore.work.query.GetWorksQuery
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.squarespace.jersey2.guice.JerseyGuiceUtils
 import io.dropwizard.jackson.Jackson
@@ -15,13 +14,11 @@ import static io.dropwizard.testing.FixtureHelpers.fixture
 
 class WorkResourceSpec extends Specification {
 
-  private GetWorksForNamespaceQuery getWorksForNamespaceQuery = Mock()
-  private GetWorksForNamespaceAndMakeQuery getWorksForNamespaceAndMakeQuery = Mock()
-  private GetWorksForNamespaceMakeAndModelQuery getWorksForNamespaceMakeAndModelQuery = Mock()
+  private GetWorksQuery getWorksQuery = Mock()
 
   @Rule
   ResourceTestRule resources = ResourceTestRule.builder()
-    .addResource(new WorkResource(getWorksForNamespaceQuery, getWorksForNamespaceAndMakeQuery, getWorksForNamespaceMakeAndModelQuery))
+    .addResource(new WorkResource(getWorksQuery))
     .build()
 
   private static ObjectMapper mapper
@@ -34,12 +31,20 @@ class WorkResourceSpec extends Specification {
 
   def "get works should return all works for given namespace"() {
     given:
-    String namespace = "test"
+    WorksRequest request = new WorksRequest()
+      .namespace("test")
+      .page(new WorksRequest.Page()
+      .pageNumber(2)
+      .pageSize(5))
     WorksResponse expected = mapper.readValue(fixture("fixtures/get_works/expected_namespace_response.json"), WorksResponse.class)
-    getWorksForNamespaceQuery.apply(namespace) >> expected
+    getWorksQuery.apply(request) >> expected
 
     when:
-    def response = resources.target("/api/works/$namespace").request().get()
+    def response = resources.target("/api/works")
+      .queryParam("namespace", "test")
+      .queryParam("page_size", 5)
+      .queryParam("page_number", 2)
+      .request().get()
 
     then:
     response.status == 200
@@ -48,13 +53,22 @@ class WorkResourceSpec extends Specification {
 
   def "get works should return all works for given namespace and make"() {
     given:
-    String namespace = "test"
-    String make = "LEICA"
+    WorksRequest request = new WorksRequest()
+      .namespace("test")
+      .make("LEICA")
+      .page(new WorksRequest.Page()
+      .pageNumber(2)
+      .pageSize(5))
     WorksResponse expected = mapper.readValue(fixture("fixtures/get_works/expected_make_response.json"), WorksResponse.class)
-    getWorksForNamespaceAndMakeQuery.apply(namespace, make) >> expected
+    getWorksQuery.apply(request) >> expected
 
     when:
-    def response = resources.target("/api/works/$namespace/$make").request().get()
+    def response = resources.target("/api/works")
+      .queryParam("namespace", "test")
+      .queryParam("make", "LEICA")
+      .queryParam("page_size", 5)
+      .queryParam("page_number", 2)
+      .request().get()
 
     then:
     response.status == 200
@@ -63,17 +77,72 @@ class WorkResourceSpec extends Specification {
 
   def "get works should return all works for given namespace, make and model"() {
     given:
-    String namespace = "test"
-    String make = "LEICA"
-    String model = "D-LUX 3"
+    WorksRequest request = new WorksRequest()
+      .namespace("test")
+      .make("LEICA")
+      .model("D-LUX 3")
+      .page(new WorksRequest.Page()
+      .pageNumber(2)
+      .pageSize(5))
     WorksResponse expected = mapper.readValue(fixture("fixtures/get_works/expected_model_response.json"), WorksResponse.class)
-    getWorksForNamespaceMakeAndModelQuery.apply(namespace, make, model) >> expected
+    getWorksQuery.apply(request) >> expected
 
     when:
-    def response = resources.target("/api/works/$namespace/$make/$model").request().get()
+    def response = resources.target("/api/works")
+      .queryParam("namespace", "test")
+      .queryParam("make", "LEICA")
+      .queryParam("model", "D-LUX 3")
+      .queryParam("page_size", 5)
+      .queryParam("page_number", 2)
+      .request().get()
 
     then:
     response.status == 200
     response.readEntity(WorksResponse.class) == expected
   }
+
+  def "default page number should be set"() {
+    given:
+    WorksRequest request = new WorksRequest()
+      .namespace("test")
+      .make("LEICA")
+      .model("D-LUX 3")
+      .page(new WorksRequest.Page()
+      .pageNumber(1)
+      .pageSize(10))
+    WorksResponse expected = mapper.readValue(fixture("fixtures/get_works/expected_model_response.json"), WorksResponse.class)
+    getWorksQuery.apply(request) >> expected
+
+    when:
+    def response = resources.target("/api/works")
+      .queryParam("namespace", "test")
+      .queryParam("make", "LEICA")
+      .queryParam("model", "D-LUX 3")
+      .request().get()
+
+    then:
+    response.status == 200
+    response.readEntity(WorksResponse.class) == expected
+  }
+
+  def "should throw up if namespace is absent"() {
+    given:
+    WorksRequest request = new WorksRequest()
+      .namespace("test")
+      .make("LEICA")
+      .model("D-LUX 3")
+      .page(new WorksRequest.Page()
+      .pageNumber(1)
+      .pageSize(10))
+
+    when:
+    def response = resources.target("/api/works")
+      .queryParam("make", "LEICA")
+      .queryParam("model", "D-LUX 3")
+      .request().get()
+
+    then:
+    response.status == 400
+  }
+
 }

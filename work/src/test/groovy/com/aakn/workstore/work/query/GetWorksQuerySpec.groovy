@@ -1,5 +1,6 @@
 package com.aakn.workstore.work.query
 
+import com.aakn.workstore.work.dto.WorksRequest
 import com.aakn.workstore.work.dto.WorksResponse
 import com.aakn.workstore.work.function.WorkEntityToResponseFunction
 import com.aakn.workstore.work.model.Work
@@ -11,33 +12,31 @@ import spock.lang.Specification
 
 import static io.dropwizard.testing.FixtureHelpers.fixture
 
-class GetWorksForNamespaceMakeAndModelQuerySpec extends Specification {
+class GetWorksQuerySpec extends Specification {
 
-  private GetWorksForNamespaceMakeAndModelQuery query
+  private GetWorksQuery query
   private ObjectMapper mapper
-
   private WorkRepository workRepository = Mock()
   private WorkEntityToResponseFunction workEntityToResponseFunction = Mock()
 
   void setup() {
-    query = new GetWorksForNamespaceMakeAndModelQuery(workRepository, workEntityToResponseFunction)
+    query = new GetWorksQuery(workRepository, workEntityToResponseFunction)
     mapper = Jackson.newObjectMapper()
   }
 
-  def "should get entities and return the response"() {
+  def "should return works"() {
     given:
     String namespace = "test"
-    String make = "LEICA"
-    String model = "D-LUX 3"
-    WorksResponse expected = mapper.readValue(fixture("fixtures/get_works/expected_model_response.json"), WorksResponse.class)
-    List<Work> workEntities = mapper.readValue(fixture("fixtures/get_works/work_entities_for_model.json"), new TypeReference<List<Work>>() {
+    WorksRequest request = new WorksRequest()
+      .namespace(namespace)
+    WorksResponse expected = mapper.readValue(fixture("fixtures/get_works/expected_namespace_response.json"), WorksResponse.class)
+    List<Work> workEntities = mapper.readValue(fixture("fixtures/get_works/work_entities_for_namespace.json"), new TypeReference<List<Work>>() {
     })
-    1 * workRepository.getWorksForNamespaceMakeAndModel(namespace, make, model) >> workEntities
+    1 * workRepository.getWorks(request) >> workEntities
     1 * workEntityToResponseFunction.apply(workEntities) >> expected
 
     expect:
-    query.apply(namespace, make, model) == expected
-
+    query.apply(request) == expected
 
   }
 }

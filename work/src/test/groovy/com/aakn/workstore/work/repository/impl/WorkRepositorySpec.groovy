@@ -1,10 +1,12 @@
 package com.aakn.workstore.work.repository.impl
 
 import com.aakn.test.hibernate.DAOTestRule
+import com.aakn.workstore.work.dto.WorksRequest
 import com.aakn.workstore.work.model.Work
 import com.aakn.workstore.work.repository.WorkRepository
 import org.junit.Rule
 import spock.lang.Specification
+import spock.lang.Unroll
 
 class WorkRepositorySpec extends Specification {
 
@@ -79,6 +81,39 @@ class WorkRepositorySpec extends Specification {
 
     then:
     works == entities[0..2]
+  }
+
+  @Unroll
+  def "should get work for a request #request"() {
+    given:
+    def entities = [buildWork("100", "foo", "NIKON"), buildWork("101", "foo", "NIKON"),
+                    buildWork("102", "foo", "NIKON"), buildWork("104", "foo", "NIKON", "N80"),
+                    buildWork("103", "foo", "LEICA"), buildWork("104", "bar", "NIKON")]
+
+    when:
+    database.inTransaction {
+      entities.forEach { workRepository.persist(it) }
+    }
+    def works = workRepository.getWorks(request)
+
+    then:
+    works == entities[range]
+
+    where:
+    request                             | range
+    new WorksRequest().namespace("foo") | 0..4
+    new WorksRequest().namespace("foo")
+      .make("NIKON")                    | 0..3
+    new WorksRequest().namespace("foo")
+      .make("NIKON")
+      .model("N50")                     | 0..2
+    new WorksRequest().namespace("foo")
+      .page(new WorksRequest.Page()
+      .pageSize(3))                     | 0..2
+    new WorksRequest().namespace("foo")
+      .page(new WorksRequest.Page()
+      .pageNumber(2)
+      .pageSize(3))                     | 3..4
   }
 
   private Work buildWork(externalId, namespace, make = "NIKON", model = "N50") {

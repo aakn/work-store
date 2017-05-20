@@ -3,10 +3,13 @@ package com.aakn.workstore.work.repository.impl;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
+import com.aakn.workstore.work.dto.WorksRequest;
 import com.aakn.workstore.work.model.Work;
 import com.aakn.workstore.work.repository.WorkRepository;
 
+import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 
 import java.util.List;
 
@@ -23,6 +26,20 @@ public class HibernateWorkRepository extends AbstractDAO<Work> implements WorkRe
   @Override
   public Work persist(Work work) {
     return super.persist(work);
+  }
+
+  @Override
+  @SuppressWarnings("unchecked")
+  public List<Work> getWorks(WorksRequest request) {
+    Criteria criteria = criteria()
+        .add(Restrictions.eq("namespace", request.namespace()))
+        .setMaxResults(request.page().pageSize())
+        .setFirstResult(calculateFirstResultPosition(request));
+
+    request.make().ifPresent(make -> criteria.add(Restrictions.eq("exif.make", make)));
+    request.model().ifPresent(model -> criteria.add(Restrictions.eq("exif.model", model)));
+
+    return criteria.list();
   }
 
   @Override
@@ -47,5 +64,9 @@ public class HibernateWorkRepository extends AbstractDAO<Work> implements WorkRe
                     .setParameter("make", make)
                     .setParameter("model", model)
                     .setParameter("namespace", namespace));
+  }
+
+  private int calculateFirstResultPosition(WorksRequest request) {
+    return (request.page().pageNumber() - 1) * request.page().pageSize();
   }
 }

@@ -3,15 +3,19 @@ package com.aakn.workstore.work.resource;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
+import com.aakn.workstore.work.dto.WorksRequest;
+import com.aakn.workstore.work.dto.WorksRequest.Page;
 import com.aakn.workstore.work.dto.WorksResponse;
-import com.aakn.workstore.work.query.GetWorksForNamespaceAndMakeQuery;
-import com.aakn.workstore.work.query.GetWorksForNamespaceMakeAndModelQuery;
-import com.aakn.workstore.work.query.GetWorksForNamespaceQuery;
+import com.aakn.workstore.work.query.GetWorksQuery;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
+import javax.validation.Valid;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import io.dropwizard.hibernate.UnitOfWork;
@@ -22,44 +26,29 @@ import lombok.extern.slf4j.Slf4j;
 @Singleton
 public class WorkResource {
 
-  private final GetWorksForNamespaceQuery getWorksForNamespaceQuery;
-  private final GetWorksForNamespaceAndMakeQuery getWorksForNamespaceAndMakeQuery;
-  private final GetWorksForNamespaceMakeAndModelQuery getWorksForNamespaceMakeAndModelQuery;
+  private final GetWorksQuery getWorksQuery;
 
   @Inject
-  public WorkResource(GetWorksForNamespaceQuery getWorksForNamespaceQuery,
-                      GetWorksForNamespaceAndMakeQuery getWorksForNamespaceAndMakeQuery,
-                      GetWorksForNamespaceMakeAndModelQuery getWorksForNamespaceMakeAndModelQuery) {
-    this.getWorksForNamespaceQuery = getWorksForNamespaceQuery;
-    this.getWorksForNamespaceAndMakeQuery = getWorksForNamespaceAndMakeQuery;
-    this.getWorksForNamespaceMakeAndModelQuery = getWorksForNamespaceMakeAndModelQuery;
+  public WorkResource(GetWorksQuery getWorksQuery) {
+    this.getWorksQuery = getWorksQuery;
   }
 
   @UnitOfWork
   @GET
-  @Path("/{namespace}")
   @Produces(MediaType.APPLICATION_JSON)
-  public WorksResponse getWorksForNamespace(@PathParam("namespace") String namespace) {
-    return getWorksForNamespaceQuery.apply(namespace);
-  }
-
-  @UnitOfWork
-  @GET
-  @Path("/{namespace}/{make}")
-  @Produces(MediaType.APPLICATION_JSON)
-  public WorksResponse getWorksForNamespaceAndMake(@PathParam("namespace") String namespace,
-                                                   @PathParam("make") String make) {
-    return getWorksForNamespaceAndMakeQuery.apply(namespace, make);
-  }
-
-  @UnitOfWork
-  @GET
-  @Path("/{namespace}/{make}/{model}")
-  @Produces(MediaType.APPLICATION_JSON)
-  public WorksResponse getWorksForNamespaceAndMake(@PathParam("namespace") String namespace,
-                                                   @PathParam("make") String make,
-                                                   @PathParam("model") String model) {
-    return getWorksForNamespaceMakeAndModelQuery.apply(namespace, make, model);
+  public WorksResponse getWorksForNamespaceMakeAndModel(@QueryParam("make") String make,
+                                                        @QueryParam("model") String model,
+                                                        @Valid @NotEmpty @QueryParam("namespace") String namespace,
+                                                        @QueryParam("page_number") @DefaultValue("1") int pageNumber,
+                                                        @QueryParam("page_size") @DefaultValue("10") int pageSize) {
+    WorksRequest worksRequest = new WorksRequest()
+        .namespace(namespace)
+        .make(make)
+        .model(model)
+        .page(new Page()
+                  .pageNumber(pageNumber)
+                  .pageSize(pageSize));
+    return getWorksQuery.apply(worksRequest);
   }
 
 }
