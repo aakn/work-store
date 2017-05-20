@@ -15,7 +15,7 @@ import spock.lang.Specification
 
 import static io.dropwizard.testing.FixtureHelpers.fixture
 
-class WorkResourceSpec extends Specification {
+class WorkApiResourceSpec extends Specification {
 
   private GetWorksQuery getWorksQuery = Mock()
   private GetMakeNamesQuery getMakeNamesQuery = Mock()
@@ -23,7 +23,7 @@ class WorkResourceSpec extends Specification {
 
   @Rule
   ResourceTestRule resources = ResourceTestRule.builder()
-    .addResource(new WorkResource(getWorksQuery, getMakeNamesQuery, getModelNamesQuery))
+    .addResource(new WorkApiResource(getWorksQuery, getMakeNamesQuery, getModelNamesQuery))
     .build()
 
   private static ObjectMapper mapper

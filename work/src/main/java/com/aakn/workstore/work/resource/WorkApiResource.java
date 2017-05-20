@@ -27,15 +27,16 @@ import lombok.extern.slf4j.Slf4j;
 @Path("/api/works")
 @Slf4j
 @Singleton
-public class WorkResource {
+@Produces(MediaType.APPLICATION_JSON)
+public class WorkApiResource {
 
   private final GetWorksQuery getWorksQuery;
   private final GetMakeNamesQuery getMakeNamesQuery;
   private final GetModelNamesQuery getModelNamesQuery;
 
   @Inject
-  public WorkResource(GetWorksQuery getWorksQuery, GetMakeNamesQuery getMakeNamesQuery,
-                      GetModelNamesQuery getModelNamesQuery) {
+  public WorkApiResource(GetWorksQuery getWorksQuery, GetMakeNamesQuery getMakeNamesQuery,
+                         GetModelNamesQuery getModelNamesQuery) {
     this.getWorksQuery = getWorksQuery;
     this.getMakeNamesQuery = getMakeNamesQuery;
     this.getModelNamesQuery = getModelNamesQuery;
@@ -43,7 +44,6 @@ public class WorkResource {
 
   @UnitOfWork
   @GET
-  @Produces(MediaType.APPLICATION_JSON)
   public WorksResponse getWorksForNamespaceMakeAndModel(@QueryParam("make") String make,
                                                         @QueryParam("model") String model,
                                                         @Valid @NotEmpty @QueryParam("namespace") String namespace,
@@ -61,7 +61,6 @@ public class WorkResource {
 
   @UnitOfWork
   @GET
-  @Produces(MediaType.APPLICATION_JSON)
   @Path("/make_names")
   public NamesResponse getMakeNames(@Valid @NotEmpty @QueryParam("namespace") String namespace) {
     return getMakeNamesQuery.apply(namespace);
@@ -70,7 +69,6 @@ public class WorkResource {
 
   @UnitOfWork
   @GET
-  @Produces(MediaType.APPLICATION_JSON)
   @Path("/model_names")
   public NamesResponse getModelNames(@Valid @NotEmpty @QueryParam("make") String make,
                                      @Valid @NotEmpty @QueryParam("namespace") String namespace) {
