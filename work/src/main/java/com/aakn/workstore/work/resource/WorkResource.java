@@ -3,9 +3,11 @@ package com.aakn.workstore.work.resource;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
+import com.aakn.workstore.work.dto.NamesResponse;
 import com.aakn.workstore.work.dto.WorksRequest;
 import com.aakn.workstore.work.dto.WorksRequest.Page;
 import com.aakn.workstore.work.dto.WorksResponse;
+import com.aakn.workstore.work.query.GetMakeNamesQuery;
 import com.aakn.workstore.work.query.GetWorksQuery;
 
 import org.hibernate.validator.constraints.NotEmpty;
@@ -27,10 +29,12 @@ import lombok.extern.slf4j.Slf4j;
 public class WorkResource {
 
   private final GetWorksQuery getWorksQuery;
+  private final GetMakeNamesQuery getMakeNamesQuery;
 
   @Inject
-  public WorkResource(GetWorksQuery getWorksQuery) {
+  public WorkResource(GetWorksQuery getWorksQuery, GetMakeNamesQuery getMakeNamesQuery) {
     this.getWorksQuery = getWorksQuery;
+    this.getMakeNamesQuery = getMakeNamesQuery;
   }
 
   @UnitOfWork
@@ -51,4 +55,12 @@ public class WorkResource {
     return getWorksQuery.apply(worksRequest);
   }
 
+  @UnitOfWork
+  @GET
+  @Produces(MediaType.APPLICATION_JSON)
+  @Path("/make_names")
+  public NamesResponse getMakeNames(@Valid @NotEmpty
+                                          @QueryParam("namespace") String namespace) {
+    return getMakeNamesQuery.apply(namespace);
+  }
 }

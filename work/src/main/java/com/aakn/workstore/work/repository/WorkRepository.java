@@ -1,5 +1,6 @@
 package com.aakn.workstore.work.repository;
 
+import com.aakn.workstore.work.dto.NamesResponse;
 import com.aakn.workstore.work.dto.WorksRequest;
 import com.aakn.workstore.work.model.Work;
 
@@ -16,4 +17,6 @@ public interface WorkRepository {
   List<Work> getWorksForNamespaceAndMake(String namespace, String make);
 
   List<Work> getWorksForNamespaceMakeAndModel(String namespace, String make, String model);
+
+  List<String> getUniqueMakeNames(String namespace);
 }

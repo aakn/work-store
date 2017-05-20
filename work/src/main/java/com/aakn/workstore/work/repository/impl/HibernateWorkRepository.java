@@ -33,6 +33,7 @@ public class HibernateWorkRepository extends AbstractDAO<Work> implements WorkRe
   public List<Work> getWorks(WorksRequest request) {
     Criteria criteria = criteria()
         .add(Restrictions.eq("namespace", request.namespace()))
+        .add(Restrictions.isNotNull("exif.make"))
         .setMaxResults(request.page().pageSize())
         .setFirstResult(calculateFirstResultPosition(request));
 
@@ -63,6 +64,13 @@ public class HibernateWorkRepository extends AbstractDAO<Work> implements WorkRe
     return list(namedQuery("getWorksForNamespaceMakeAndModel")
                     .setParameter("make", make)
                     .setParameter("model", model)
+                    .setParameter("namespace", namespace));
+  }
+
+  @Override
+  @SuppressWarnings("unchecked")
+  public List<String> getUniqueMakeNames(String namespace) {
+    return list(namedQuery("getUniqueMakeNames")
                     .setParameter("namespace", namespace));
   }
 

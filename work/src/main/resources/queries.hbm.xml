@@ -20,4 +20,10 @@
             ]]>
     </query>
 
+    <query name="getUniqueMakeNames">
+        <![CDATA[
+            select distinct w.exif.make from Work w where namespace = :namespace and make is not NULL order by w.exif.make
+            ]]>
+    </query>
+
 </hibernate-mapping>

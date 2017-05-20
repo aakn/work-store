@@ -84,11 +84,12 @@ class WorkRepositorySpec extends Specification {
   }
 
   @Unroll
-  def "should get work for a request #request"() {
+  def "should get work for a request #request excluding nulls"() {
     given:
     def entities = [buildWork("100", "foo", "NIKON"), buildWork("101", "foo", "NIKON"),
-                    buildWork("102", "foo", "NIKON"), buildWork("104", "foo", "NIKON", "N80"),
-                    buildWork("103", "foo", "LEICA"), buildWork("104", "bar", "NIKON")]
+                    buildWork("102", "foo", "NIKON"), buildWork("103", "foo", "NIKON", "N80"),
+                    buildWork("104", "foo", "LEICA"), buildWork("105", "bar", "NIKON"),
+                    new Work(externalId: "106", namespace: "foo", exif: new Work.Exif(), images: new Work.Images())]
 
     when:
     database.inTransaction {
@@ -114,6 +115,23 @@ class WorkRepositorySpec extends Specification {
       .page(new WorksRequest.Page()
       .pageNumber(2)
       .pageSize(3))                     | 3..4
+  }
+
+  def "should return a unique list of makes excluding nulls"() {
+    given:
+    def entities = [buildWork("100", "foo"), buildWork("101", "foo"),
+                    buildWork("102", "foo"), buildWork("103", "foo", "LEICA"),
+                    buildWork("104", "foo", "CANON"), buildWork("105", "bar", "FUJI"),
+                    new Work(externalId: "106", namespace: "foo", exif: new Work.Exif(), images: new Work.Images())]
+
+    when:
+    database.inTransaction {
+      entities.forEach { workRepository.persist(it) }
+    }
+    def makeNames = workRepository.getUniqueMakeNames("foo")
+
+    then:
+    makeNames == ["CANON", "LEICA", "NIKON"]
   }
 
   private Work buildWork(externalId, namespace, make = "NIKON", model = "N50") {

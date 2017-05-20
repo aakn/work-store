@@ -1,7 +1,9 @@
 package com.aakn.workstore.work.resource
 
+import com.aakn.workstore.work.dto.NamesResponse
 import com.aakn.workstore.work.dto.WorksRequest
 import com.aakn.workstore.work.dto.WorksResponse
+import com.aakn.workstore.work.query.GetMakeNamesQuery
 import com.aakn.workstore.work.query.GetWorksQuery
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.squarespace.jersey2.guice.JerseyGuiceUtils
@@ -15,10 +17,11 @@ import static io.dropwizard.testing.FixtureHelpers.fixture
 class WorkResourceSpec extends Specification {
 
   private GetWorksQuery getWorksQuery = Mock()
+  private GetMakeNamesQuery getMakeNamesQuery = Mock()
 
   @Rule
   ResourceTestRule resources = ResourceTestRule.builder()
-    .addResource(new WorkResource(getWorksQuery))
+    .addResource(new WorkResource(getWorksQuery, getMakeNamesQuery))
     .build()
 
   private static ObjectMapper mapper
@@ -101,7 +104,7 @@ class WorkResourceSpec extends Specification {
     response.readEntity(WorksResponse.class) == expected
   }
 
-  def "default page number should be set"() {
+  def "get works should set a default page number and page size"() {
     given:
     WorksRequest request = new WorksRequest()
       .namespace("test")
@@ -125,21 +128,36 @@ class WorkResourceSpec extends Specification {
     response.readEntity(WorksResponse.class) == expected
   }
 
-  def "should throw up if namespace is absent"() {
-    given:
-    WorksRequest request = new WorksRequest()
-      .namespace("test")
-      .make("LEICA")
-      .model("D-LUX 3")
-      .page(new WorksRequest.Page()
-      .pageNumber(1)
-      .pageSize(10))
-
+  def "get works should throw up if namespace is absent"() {
     when:
     def response = resources.target("/api/works")
       .queryParam("make", "LEICA")
       .queryParam("model", "D-LUX 3")
       .request().get()
+
+    then:
+    response.status == 400
+  }
+
+  def "get make names should return a list of names"() {
+    given:
+    String namespace = "test"
+    getMakeNamesQuery.apply(namespace) >> new NamesResponse(names: ["LEICA", "NIKON", "CANON"])
+
+    when:
+    def response = resources.target("/api/works/make_names")
+      .queryParam("namespace", "test")
+      .request().get()
+
+    then:
+    response.status == 200
+    response.readEntity(NamesResponse.class).names == ["LEICA", "NIKON", "CANON"]
+
+  }
+
+  def "get make names should throw up if namespace is absent"() {
+    when:
+    def response = resources.target("/api/works/make_names").request().get()
 
     then:
     response.status == 400
