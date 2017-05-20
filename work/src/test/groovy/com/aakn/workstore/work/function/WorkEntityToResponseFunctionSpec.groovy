@@ -34,6 +34,7 @@ class WorkEntityToResponseFunctionSpec extends Specification {
     type        | _
     "namespace" | _
     "make"      | _
+    "model"     | _
     "null"      | _
 
   }
