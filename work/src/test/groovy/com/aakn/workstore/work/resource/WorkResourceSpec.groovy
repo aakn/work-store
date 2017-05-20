@@ -1,6 +1,7 @@
 package com.aakn.workstore.work.resource
 
 import com.aakn.workstore.work.dto.WorksResponse
+import com.aakn.workstore.work.query.GetWorksForNamespaceAndMakeQuery
 import com.aakn.workstore.work.query.GetWorksForNamespaceQuery
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.squarespace.jersey2.guice.JerseyGuiceUtils
@@ -14,10 +15,11 @@ import static io.dropwizard.testing.FixtureHelpers.fixture
 class WorkResourceSpec extends Specification {
 
   private GetWorksForNamespaceQuery getWorksForNamespaceQuery = Mock()
+  private GetWorksForNamespaceAndMakeQuery getWorksForNamespaceAndMakeQuery = Mock()
 
   @Rule
   ResourceTestRule resources = ResourceTestRule.builder()
-    .addResource(new WorkResource(getWorksForNamespaceQuery))
+    .addResource(new WorkResource(getWorksForNamespaceQuery, getWorksForNamespaceAndMakeQuery))
     .build()
 
   private static ObjectMapper mapper
@@ -28,10 +30,10 @@ class WorkResourceSpec extends Specification {
     mapper = Jackson.newObjectMapper()
   }
 
-  def "get works should return serialized works"() {
+  def "get works should return all works for given namespace"() {
     given:
     String namespace = "test"
-    WorksResponse expected = mapper.readValue(fixture("fixtures/get_works/expected_response.json"), WorksResponse.class)
+    WorksResponse expected = mapper.readValue(fixture("fixtures/get_works/expected_namespace_response.json"), WorksResponse.class)
     getWorksForNamespaceQuery.apply(namespace) >> expected
 
     when:
@@ -40,6 +42,20 @@ class WorkResourceSpec extends Specification {
     then:
     response.status == 200
     response.readEntity(WorksResponse.class) == expected
+  }
 
+  def "get works should return all works for given namespace and make"() {
+    given:
+    String namespace = "test"
+    String make = "LEICA"
+    WorksResponse expected = mapper.readValue(fixture("fixtures/get_works/expected_make_response.json"), WorksResponse.class)
+    getWorksForNamespaceAndMakeQuery.apply(namespace, make) >> expected
+
+    when:
+    def response = resources.target("/api/works/$namespace/$make").request().get()
+
+    then:
+    response.status == 200
+    response.readEntity(WorksResponse.class) == expected
   }
 }

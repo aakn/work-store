@@ -1,8 +1,8 @@
 {
-  "namespace": "test",
   "works": [
     {
       "id": "31820",
+      "namespace": "test",
       "exif": {
         "model": "NIKON D80",
         "make": "NIKON CORPORATION"
@@ -15,6 +15,7 @@
     },
     {
       "id": "2041",
+      "namespace": "test",
       "exif": {
         "model": "Canon EOS 20D",
         "make": "Canon"
@@ -27,6 +28,7 @@
     },
     {
       "id": "240509",
+      "namespace": "test",
       "exif": {
         "model": "FinePix S6500fd",
         "make": "FUJIFILM"
@@ -39,6 +41,7 @@
     },
     {
       "id": "26583",
+      "namespace": "test",
       "exif": {
         "model": null,
         "make": null
@@ -51,6 +54,7 @@
     },
     {
       "id": "2729606",
+      "namespace": "test",
       "exif": {
         "model": "D-LUX 3",
         "make": "LEICA"

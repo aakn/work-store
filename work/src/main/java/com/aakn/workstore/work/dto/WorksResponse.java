@@ -12,7 +12,6 @@ import lombok.Data;
 public class WorksResponse {
 
   private List<Work> works;
-  private String namespace;
 
   @Data
   @JsonSnakeCase
@@ -21,6 +20,7 @@ public class WorksResponse {
     private String id;
     private Exif exif;
     private Images images;
+    private String namespace;
   }
 
   @Data

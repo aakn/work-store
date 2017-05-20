@@ -11,29 +11,30 @@ import spock.lang.Specification
 
 import static io.dropwizard.testing.FixtureHelpers.fixture
 
-class GetWorksForNamespaceQuerySpec extends Specification {
+class GetWorksForNamespaceAndMakeQuerySpec extends Specification {
 
-  private GetWorksForNamespaceQuery query
+  private GetWorksForNamespaceAndMakeQuery query
   private ObjectMapper mapper
   private WorkRepository workRepository = Mock()
   private WorkEntityToResponseFunction workEntityToResponseFunction = Mock()
 
   void setup() {
-    query = new GetWorksForNamespaceQuery(workRepository, workEntityToResponseFunction)
+    query = new GetWorksForNamespaceAndMakeQuery(workRepository, workEntityToResponseFunction)
     mapper = Jackson.newObjectMapper()
   }
 
-  def "should return works"() {
+  def "should return works for given namespace and make"() {
     given:
     String namespace = "test"
+    String make = "LEICA"
     WorksResponse expected = mapper.readValue(fixture("fixtures/get_works/expected_namespace_response.json"), WorksResponse.class)
     List<Work> workEntities = mapper.readValue(fixture("fixtures/get_works/work_entities_for_namespace.json"), new TypeReference<List<Work>>() {
     })
-    1 * workRepository.getWorksForNamespace(namespace) >> workEntities
+    1 * workRepository.getWorksForNamespaceAndMake(namespace, make) >> workEntities
     1 * workEntityToResponseFunction.apply(workEntities) >> expected
 
     expect:
-    query.apply(namespace) == expected
+    query.apply(namespace, make) == expected
 
   }
 }
