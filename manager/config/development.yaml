@@ -33,3 +33,8 @@ databaseConfiguration:
   maxSize: 20
   validationInterval: 10s
   minIdleTime: 1 minute
+
+viewConfiguration:
+  .ftl:
+    strict_syntax: yes
+    cache: false

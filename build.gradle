@@ -20,6 +20,7 @@ subprojects {
     compile "io.dropwizard:dropwizard-core:$dropwizardVersion"
     compile "io.dropwizard:dropwizard-client:$dropwizardVersion"
     compile "io.dropwizard:dropwizard-hibernate:$dropwizardVersion"
+    compile "io.dropwizard:dropwizard-views-freemarker:$dropwizardVersion"
     compile "org.projectlombok:lombok:$lombokVersion"
     compile "com.google.inject:guice:$guiceVersion"
     compile "com.hubspot.dropwizard:dropwizard-guice:$dropwizardGuiceVersion"

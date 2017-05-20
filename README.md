@@ -12,6 +12,7 @@ For the plugin to function correctly, please enable it under
 2. Lombok
 3. Guice
 4. Hystrix
+5. Freemarker
 
 **Test Libraries**
 
@@ -24,4 +25,10 @@ For the plugin to function correctly, please enable it under
 
 ```bash
 ./gradlew run
+```
+
+### How to run the tests
+
+```bash
+./gradlew test
 ```

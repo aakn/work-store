@@ -1,5 +1,7 @@
 package com.aakn.workstore.manager.config;
 
+import java.util.Map;
+
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
@@ -18,4 +20,8 @@ public class ApplicationConfiguration extends Configuration {
   @Valid
   @NotNull
   private DataSourceFactory databaseConfiguration = new DataSourceFactory();
+
+  @Valid
+  @NotNull
+  private Map<String, Map<String, String>> viewConfiguration;
 }

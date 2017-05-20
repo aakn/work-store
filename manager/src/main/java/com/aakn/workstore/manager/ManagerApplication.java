@@ -11,12 +11,14 @@ import com.hubspot.dropwizard.guice.GuiceBundle;
 
 import org.glassfish.jersey.logging.LoggingFeature;
 
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import io.dropwizard.views.ViewBundle;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -43,6 +45,12 @@ public class ManagerApplication extends Application<ApplicationConfiguration> {
             .enableAutoConfig("com.aakn.workstore.manager.config")
             .build(Stage.DEVELOPMENT);
     bootstrap.addBundle(guiceBundle);
+    bootstrap.addBundle(new ViewBundle<ApplicationConfiguration>() {
+      @Override
+      public Map<String, Map<String, String>> getViewConfiguration(ApplicationConfiguration config) {
+        return config.getViewConfiguration();
+      }
+    });
   }
 
   @Override
