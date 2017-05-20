@@ -134,6 +134,24 @@ class WorkRepositorySpec extends Specification {
     makeNames == ["CANON", "LEICA", "NIKON"]
   }
 
+
+  def "should return a unique list of models excluding nulls"() {
+    given:
+    def entities = [buildWork("100", "foo"), buildWork("101", "foo", "NIKON", "N80"),
+                    buildWork("102", "foo"), buildWork("103", "foo", "LEICA", "D-LUX 3"),
+                    buildWork("104", "foo", "CANON"), buildWork("105", "bar", "NIKON", "N60"),
+                    new Work(externalId: "106", namespace: "foo", exif: new Work.Exif(make: "NIKON"), images: new Work.Images())]
+
+    when:
+    database.inTransaction {
+      entities.forEach { workRepository.persist(it) }
+    }
+    def makeNames = workRepository.getUniqueModelNames("foo", "NIKON")
+
+    then:
+    makeNames == ["N50", "N80"]
+  }
+
   private Work buildWork(externalId, namespace, make = "NIKON", model = "N50") {
     def images = new Work.Images(smallImage: "http://localhost/small.jpg")
     def exif = new Work.Exif(model: model, make: make)

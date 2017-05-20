@@ -19,4 +19,6 @@ public interface WorkRepository {
   List<Work> getWorksForNamespaceMakeAndModel(String namespace, String make, String model);
 
   List<String> getUniqueMakeNames(String namespace);
+
+  List<String> getUniqueModelNames(String namespace, String make);
 }

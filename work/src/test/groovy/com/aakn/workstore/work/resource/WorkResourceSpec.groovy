@@ -4,6 +4,7 @@ import com.aakn.workstore.work.dto.NamesResponse
 import com.aakn.workstore.work.dto.WorksRequest
 import com.aakn.workstore.work.dto.WorksResponse
 import com.aakn.workstore.work.query.GetMakeNamesQuery
+import com.aakn.workstore.work.query.GetModelNamesQuery
 import com.aakn.workstore.work.query.GetWorksQuery
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.squarespace.jersey2.guice.JerseyGuiceUtils
@@ -18,10 +19,11 @@ class WorkResourceSpec extends Specification {
 
   private GetWorksQuery getWorksQuery = Mock()
   private GetMakeNamesQuery getMakeNamesQuery = Mock()
+  private GetModelNamesQuery getModelNamesQuery = Mock()
 
   @Rule
   ResourceTestRule resources = ResourceTestRule.builder()
-    .addResource(new WorkResource(getWorksQuery, getMakeNamesQuery))
+    .addResource(new WorkResource(getWorksQuery, getMakeNamesQuery, getModelNamesQuery))
     .build()
 
   private static ObjectMapper mapper
@@ -158,6 +160,42 @@ class WorkResourceSpec extends Specification {
   def "get make names should throw up if namespace is absent"() {
     when:
     def response = resources.target("/api/works/make_names").request().get()
+
+    then:
+    response.status == 400
+  }
+
+  def "get model names should return a list of names"() {
+    given:
+    getModelNamesQuery.apply("test", "LEICA") >> new NamesResponse(names: ["D-LUX-3"])
+
+    when:
+    def response = resources.target("/api/works/model_names")
+      .queryParam("namespace", "test")
+      .queryParam("make", "LEICA")
+      .request().get()
+
+    then:
+    response.status == 200
+    response.readEntity(NamesResponse.class).names == ["D-LUX-3"]
+
+  }
+
+  def "get model names should throw up if namespace is absent"() {
+    when:
+    def response = resources.target("/api/works/model_names")
+      .queryParam("make", "LEICA")
+      .request().get()
+
+    then:
+    response.status == 400
+  }
+
+  def "get model names should throw up if make is absent"() {
+    when:
+    def response = resources.target("/api/works/model_names")
+      .queryParam("namespace", "test")
+      .request().get()
 
     then:
     response.status == 400

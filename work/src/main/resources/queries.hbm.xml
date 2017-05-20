@@ -19,10 +19,14 @@
             select w from Work w where namespace = :namespace and make = :make and model = :model
             ]]>
     </query>
-
     <query name="getUniqueMakeNames">
         <![CDATA[
             select distinct w.exif.make from Work w where namespace = :namespace and make is not NULL order by w.exif.make
+            ]]>
+    </query>
+    <query name="getUniqueModelNames">
+        <![CDATA[
+            select distinct w.exif.model from Work w where namespace = :namespace and make = :make and model is not null order by w.exif.model
             ]]>
     </query>
 

@@ -8,6 +8,7 @@ import com.aakn.workstore.work.dto.WorksRequest;
 import com.aakn.workstore.work.dto.WorksRequest.Page;
 import com.aakn.workstore.work.dto.WorksResponse;
 import com.aakn.workstore.work.query.GetMakeNamesQuery;
+import com.aakn.workstore.work.query.GetModelNamesQuery;
 import com.aakn.workstore.work.query.GetWorksQuery;
 
 import org.hibernate.validator.constraints.NotEmpty;
@@ -30,11 +31,14 @@ public class WorkResource {
 
   private final GetWorksQuery getWorksQuery;
   private final GetMakeNamesQuery getMakeNamesQuery;
+  private final GetModelNamesQuery getModelNamesQuery;
 
   @Inject
-  public WorkResource(GetWorksQuery getWorksQuery, GetMakeNamesQuery getMakeNamesQuery) {
+  public WorkResource(GetWorksQuery getWorksQuery, GetMakeNamesQuery getMakeNamesQuery,
+                      GetModelNamesQuery getModelNamesQuery) {
     this.getWorksQuery = getWorksQuery;
     this.getMakeNamesQuery = getMakeNamesQuery;
+    this.getModelNamesQuery = getModelNamesQuery;
   }
 
   @UnitOfWork
@@ -59,8 +63,17 @@ public class WorkResource {
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   @Path("/make_names")
-  public NamesResponse getMakeNames(@Valid @NotEmpty
-                                          @QueryParam("namespace") String namespace) {
+  public NamesResponse getMakeNames(@Valid @NotEmpty @QueryParam("namespace") String namespace) {
     return getMakeNamesQuery.apply(namespace);
+  }
+
+
+  @UnitOfWork
+  @GET
+  @Produces(MediaType.APPLICATION_JSON)
+  @Path("/model_names")
+  public NamesResponse getModelNames(@Valid @NotEmpty @QueryParam("make") String make,
+                                     @Valid @NotEmpty @QueryParam("namespace") String namespace) {
+    return getModelNamesQuery.apply(namespace, make);
   }
 }

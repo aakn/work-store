@@ -74,6 +74,14 @@ public class HibernateWorkRepository extends AbstractDAO<Work> implements WorkRe
                     .setParameter("namespace", namespace));
   }
 
+  @Override
+  @SuppressWarnings("unchecked")
+  public List<String> getUniqueModelNames(String namespace, String make) {
+    return list(namedQuery("getUniqueModelNames")
+                    .setParameter("make", make)
+                    .setParameter("namespace", namespace));
+  }
+
   private int calculateFirstResultPosition(WorksRequest request) {
     return (request.page().pageNumber() - 1) * request.page().pageSize();
   }
