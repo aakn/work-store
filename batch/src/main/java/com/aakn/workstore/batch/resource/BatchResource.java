@@ -17,7 +17,7 @@ import javax.ws.rs.core.Response;
 import io.dropwizard.hibernate.UnitOfWork;
 import lombok.extern.slf4j.Slf4j;
 
-@Path("/works")
+@Path("/api/works")
 @Slf4j
 @Singleton
 public class BatchResource {

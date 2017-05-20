@@ -1,16 +1,18 @@
 package com.aakn.workstore.work.repository.impl
 
+import com.aakn.test.hibernate.DAOTestRule
 import com.aakn.workstore.work.model.Work
 import com.aakn.workstore.work.repository.WorkRepository
-import io.dropwizard.testing.junit.DAOTestRule
 import org.junit.Rule
 import spock.lang.Specification
 
 class WorkRepositorySpec extends Specification {
+
   @Rule
   public DAOTestRule database = DAOTestRule.newBuilder()
     .addEntityClass(Work.class)
     .setShowSql(true)
+    .addResource("queries.hbm.xml")
     .build()
 
   private WorkRepository workRepository
@@ -20,8 +22,8 @@ class WorkRepositorySpec extends Specification {
   }
 
   def "should create work"() {
-    setup:
-    def entity = buildWork()
+    given:
+    def entity = buildWork("100", "foo")
 
     when:
     database.inTransaction {
@@ -30,13 +32,30 @@ class WorkRepositorySpec extends Specification {
 
     then:
     entity.id
+  }
+
+  def "should get work for a namespace after persisting"() {
+    given:
+    def entities = [buildWork("100", "foo"), buildWork("101", "foo"),
+                    buildWork("102", "foo"), buildWork("103", "bar")]
+
+    when:
+    database.inTransaction {
+      entities.forEach { workRepository.persist(it) }
+    }
+    def works = workRepository.getWorksForNamespace("foo")
+    works.each { work -> work.id = 0 }
+
+    then:
+
+    works == [buildWork("100", "foo"), buildWork("101", "foo"), buildWork("102", "foo")]
 
   }
 
-  private Work buildWork() {
+  private Work buildWork(externalId, namespace, model = "N50", make = "NIKON") {
     def images = new Work.Images(smallImage: "http://localhost/small.jpg")
-    def exif = new Work.Exif(model: "N50", make: "NIKON")
+    def exif = new Work.Exif(model: model, make: make)
 
-    return new Work(exif: exif, images: images)
+    return new Work(externalId: externalId, namespace: namespace, exif: exif, images: images)
   }
 }

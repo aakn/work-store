@@ -8,6 +8,8 @@ import com.aakn.workstore.work.repository.WorkRepository;
 
 import org.hibernate.SessionFactory;
 
+import java.util.List;
+
 import io.dropwizard.hibernate.AbstractDAO;
 
 @Singleton
@@ -21,5 +23,12 @@ public class HibernateWorkRepository extends AbstractDAO<Work> implements WorkRe
   @Override
   public Work persist(Work work) {
     return super.persist(work);
+  }
+
+  @Override
+  @SuppressWarnings("unchecked")
+  public List<Work> getWorksForNamespace(String namespace) {
+    return list(namedQuery("getWorksForNamespace")
+                    .setParameter("namespace", namespace));
   }
 }

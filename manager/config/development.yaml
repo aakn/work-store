@@ -23,10 +23,10 @@ databaseConfiguration:
   driverClass: org.h2.Driver
   user: sa
   password:
-  url: jdbc:h2:./db/work-store-memory-db.h2
+  url: jdbc:h2:./db/work-store-memory-db.h2;DB_CLOSE_ON_EXIT=FALSE
   properties:
     charSet: UTF-8
-    hibernate.hbm2ddl.auto: create
+    hibernate.hbm2ddl.auto: update
   maxWaitForConnection: 1s
   validationQuery: "/* MyService Health Check */ SELECT 1"
   minSize: 1

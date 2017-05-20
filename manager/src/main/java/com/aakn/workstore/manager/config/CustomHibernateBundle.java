@@ -24,5 +24,6 @@ public class CustomHibernateBundle extends ScanningHibernateBundle<ApplicationCo
 
   @Override
   protected void configure(Configuration configuration) {
+    configuration.addResource("queries.hbm.xml");
   }
 }

@@ -1,0 +1,38 @@
+package com.aakn.workstore.work.resource;
+
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+
+import com.aakn.workstore.work.dto.WorksResponse;
+import com.aakn.workstore.work.query.GetWorksForNamespaceQuery;
+
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+import io.dropwizard.hibernate.UnitOfWork;
+import lombok.extern.slf4j.Slf4j;
+
+@Path("/api/works")
+@Slf4j
+@Singleton
+public class WorkResource {
+
+  private final GetWorksForNamespaceQuery getWorksForNamespaceQuery;
+
+  @Inject
+  public WorkResource(GetWorksForNamespaceQuery getWorksForNamespaceQuery) {
+    this.getWorksForNamespaceQuery = getWorksForNamespaceQuery;
+  }
+
+  @UnitOfWork
+  @GET
+  @Path("/{namespace}")
+  @Produces(MediaType.APPLICATION_JSON)
+  public WorksResponse process(@PathParam("namespace") String namespace) {
+    return getWorksForNamespaceQuery.apply(namespace);
+  }
+
+}

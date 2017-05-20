@@ -30,7 +30,7 @@ class BatchResourceSpec extends Specification {
     def request = new BatchWorkRequest(url: UriBuilder.fromUri("http://localhost/test").build(), directory: "test")
 
     when:
-    def response = resources.target("/works").request().post(json(request))
+    def response = resources.target("/api/works").request().post(json(request))
 
     then:
     response.status == 202
