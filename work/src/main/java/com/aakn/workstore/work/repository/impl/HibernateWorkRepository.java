@@ -39,4 +39,13 @@ public class HibernateWorkRepository extends AbstractDAO<Work> implements WorkRe
                     .setParameter("make", make)
                     .setParameter("namespace", namespace));
   }
+
+  @Override
+  @SuppressWarnings("unchecked")
+  public List<Work> getWorksForNamespaceMakeAndModel(String namespace, String make, String model) {
+    return list(namedQuery("getWorksForNamespaceMakeAndModel")
+                    .setParameter("make", make)
+                    .setParameter("model", model)
+                    .setParameter("namespace", namespace));
+  }
 }

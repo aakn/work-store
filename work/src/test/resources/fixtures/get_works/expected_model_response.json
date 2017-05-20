@@ -1,0 +1,69 @@
+{
+  "works": [
+    {
+      "id": "2729606",
+      "namespace": "test",
+      "exif": {
+        "model": "D-LUX 3",
+        "make": "LEICA"
+      },
+      "images": {
+        "small_image": "http://ih1.redbubble.net/work.2729606.1.flat,135x135,075,f.jpg",
+        "medium_image": "http://ih1.redbubble.net/work.2729606.1.flat,300x300,075,f.jpg",
+        "large_image": "http://ih1.redbubble.net/work.2729606.1.flat,550x550,075,f.jpg"
+      }
+    },
+    {
+      "id": "3201430",
+      "namespace": "test",
+      "exif": {
+        "model": "D-LUX 3",
+        "make": "LEICA"
+      },
+      "images": {
+        "small_image": "http://ih1.redbubble.net/work.3201430.1.flat,135x135,075,f.jpg",
+        "medium_image": "http://ih1.redbubble.net/work.3201430.1.flat,300x300,075,f.jpg",
+        "large_image": "http://ih1.redbubble.net/work.3201430.1.flat,550x550,075,f.jpg"
+      }
+    },
+    {
+      "id": "3502552",
+      "namespace": "test",
+      "exif": {
+        "model": "D-LUX 3",
+        "make": "LEICA"
+      },
+      "images": {
+        "small_image": "http://ih1.redbubble.net/work.3502552.1.flat,135x135,075,f.jpg",
+        "medium_image": "http://ih1.redbubble.net/work.3502552.1.flat,300x300,075,f.jpg",
+        "large_image": "http://ih1.redbubble.net/work.3502552.1.flat,550x550,075,f.jpg"
+      }
+    },
+    {
+      "id": "512919",
+      "namespace": "test",
+      "exif": {
+        "model": "D-LUX 3",
+        "make": "LEICA"
+      },
+      "images": {
+        "small_image": "http://ih1.redbubble.net/work.512919.1.flat,135x135,075,f.jpg",
+        "medium_image": "http://ih1.redbubble.net/work.512919.1.flat,300x300,075,f.jpg",
+        "large_image": "http://ih1.redbubble.net/work.512919.1.flat,550x550,075,f.jpg"
+      }
+    },
+    {
+      "id": "4250369",
+      "namespace": "test",
+      "exif": {
+        "model": "D-LUX 3",
+        "make": "LEICA"
+      },
+      "images": {
+        "small_image": "http://ih1.redbubble.net/work.4250369.1.flat,135x135,075,f.jpg",
+        "medium_image": "http://ih1.redbubble.net/work.4250369.1.flat,300x300,075,f.jpg",
+        "large_image": "http://ih1.redbubble.net/work.4250369.1.flat,550x550,075,f.jpg"
+      }
+    }
+  ]
+}

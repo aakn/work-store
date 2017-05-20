@@ -14,5 +14,10 @@
             select w from Work w where namespace = :namespace and make = :make
             ]]>
     </query>
+    <query name="getWorksForNamespaceMakeAndModel">
+        <![CDATA[
+            select w from Work w where namespace = :namespace and make = :make and model = :model
+            ]]>
+    </query>
 
 </hibernate-mapping>

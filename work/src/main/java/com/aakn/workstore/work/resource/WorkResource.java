@@ -5,6 +5,7 @@ import com.google.inject.Singleton;
 
 import com.aakn.workstore.work.dto.WorksResponse;
 import com.aakn.workstore.work.query.GetWorksForNamespaceAndMakeQuery;
+import com.aakn.workstore.work.query.GetWorksForNamespaceMakeAndModelQuery;
 import com.aakn.workstore.work.query.GetWorksForNamespaceQuery;
 
 import javax.ws.rs.GET;
@@ -23,12 +24,15 @@ public class WorkResource {
 
   private final GetWorksForNamespaceQuery getWorksForNamespaceQuery;
   private final GetWorksForNamespaceAndMakeQuery getWorksForNamespaceAndMakeQuery;
+  private final GetWorksForNamespaceMakeAndModelQuery getWorksForNamespaceMakeAndModelQuery;
 
   @Inject
   public WorkResource(GetWorksForNamespaceQuery getWorksForNamespaceQuery,
-                      GetWorksForNamespaceAndMakeQuery getWorksForNamespaceAndMakeQuery) {
+                      GetWorksForNamespaceAndMakeQuery getWorksForNamespaceAndMakeQuery,
+                      GetWorksForNamespaceMakeAndModelQuery getWorksForNamespaceMakeAndModelQuery) {
     this.getWorksForNamespaceQuery = getWorksForNamespaceQuery;
     this.getWorksForNamespaceAndMakeQuery = getWorksForNamespaceAndMakeQuery;
+    this.getWorksForNamespaceMakeAndModelQuery = getWorksForNamespaceMakeAndModelQuery;
   }
 
   @UnitOfWork
@@ -46,6 +50,16 @@ public class WorkResource {
   public WorksResponse getWorksForNamespaceAndMake(@PathParam("namespace") String namespace,
                                                    @PathParam("make") String make) {
     return getWorksForNamespaceAndMakeQuery.apply(namespace, make);
+  }
+
+  @UnitOfWork
+  @GET
+  @Path("/{namespace}/{make}/{model}")
+  @Produces(MediaType.APPLICATION_JSON)
+  public WorksResponse getWorksForNamespaceAndMake(@PathParam("namespace") String namespace,
+                                                   @PathParam("make") String make,
+                                                   @PathParam("model") String model) {
+    return getWorksForNamespaceMakeAndModelQuery.apply(namespace, make, model);
   }
 
 }

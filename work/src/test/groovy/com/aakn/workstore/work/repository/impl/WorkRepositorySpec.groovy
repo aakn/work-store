@@ -51,15 +51,31 @@ class WorkRepositorySpec extends Specification {
 
   def "should get work for a namespace and make after persisting"() {
     given:
-    def entities = [buildWork("100", "foo", "NIKON"), buildWork("101", "foo", "NIKON"),
-                    buildWork("102", "foo", "NIKON"), buildWork("103", "foo", "LEICA"),
-                    buildWork("104", "bar", "NIKON")]
+    def entities = [buildWork("100", "foo"), buildWork("101", "foo"),
+                    buildWork("102", "foo"), buildWork("103", "foo", "LEICA"),
+                    buildWork("104", "bar")]
 
     when:
     database.inTransaction {
       entities.forEach { workRepository.persist(it) }
     }
     def works = workRepository.getWorksForNamespaceAndMake("foo", "NIKON")
+
+    then:
+    works == entities[0..2]
+  }
+
+  def "should get work for a namespace, make and model after persisting"() {
+    given:
+    def entities = [buildWork("100", "foo", "NIKON"), buildWork("101", "foo", "NIKON"),
+                    buildWork("102", "foo", "NIKON"), buildWork("103", "foo", "LEICA"),
+                    buildWork("104", "bar", "NIKON"), buildWork("104", "foo", "NIKON", "N80")]
+
+    when:
+    database.inTransaction {
+      entities.forEach { workRepository.persist(it) }
+    }
+    def works = workRepository.getWorksForNamespaceMakeAndModel("foo", "NIKON", "N50")
 
     then:
     works == entities[0..2]

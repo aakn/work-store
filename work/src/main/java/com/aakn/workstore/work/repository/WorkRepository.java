@@ -12,4 +12,6 @@ public interface WorkRepository {
   List<Work> getWorksForNamespace(String namespace);
 
   List<Work> getWorksForNamespaceAndMake(String namespace, String make);
+
+  List<Work> getWorksForNamespaceMakeAndModel(String namespace, String make, String model);
 }

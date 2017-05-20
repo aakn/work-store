@@ -2,6 +2,7 @@ package com.aakn.workstore.work.resource
 
 import com.aakn.workstore.work.dto.WorksResponse
 import com.aakn.workstore.work.query.GetWorksForNamespaceAndMakeQuery
+import com.aakn.workstore.work.query.GetWorksForNamespaceMakeAndModelQuery
 import com.aakn.workstore.work.query.GetWorksForNamespaceQuery
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.squarespace.jersey2.guice.JerseyGuiceUtils
@@ -16,10 +17,11 @@ class WorkResourceSpec extends Specification {
 
   private GetWorksForNamespaceQuery getWorksForNamespaceQuery = Mock()
   private GetWorksForNamespaceAndMakeQuery getWorksForNamespaceAndMakeQuery = Mock()
+  private GetWorksForNamespaceMakeAndModelQuery getWorksForNamespaceMakeAndModelQuery = Mock()
 
   @Rule
   ResourceTestRule resources = ResourceTestRule.builder()
-    .addResource(new WorkResource(getWorksForNamespaceQuery, getWorksForNamespaceAndMakeQuery))
+    .addResource(new WorkResource(getWorksForNamespaceQuery, getWorksForNamespaceAndMakeQuery, getWorksForNamespaceMakeAndModelQuery))
     .build()
 
   private static ObjectMapper mapper
@@ -53,6 +55,22 @@ class WorkResourceSpec extends Specification {
 
     when:
     def response = resources.target("/api/works/$namespace/$make").request().get()
+
+    then:
+    response.status == 200
+    response.readEntity(WorksResponse.class) == expected
+  }
+
+  def "get works should return all works for given namespace, make and model"() {
+    given:
+    String namespace = "test"
+    String make = "LEICA"
+    String model = "D-LUX 3"
+    WorksResponse expected = mapper.readValue(fixture("fixtures/get_works/expected_model_response.json"), WorksResponse.class)
+    getWorksForNamespaceMakeAndModelQuery.apply(namespace, make, model) >> expected
+
+    when:
+    def response = resources.target("/api/works/$namespace/$make/$model").request().get()
 
     then:
     response.status == 200
