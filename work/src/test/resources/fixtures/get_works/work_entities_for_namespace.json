@@ -39,19 +39,6 @@
     }
   },
   {
-    "externalId": "26583",
-    "namespace": "test",
-    "exif": {
-      "model": null,
-      "make": null
-    },
-    "images": {
-      "smallImage": "http://ih1.redbubble.net/work.26583.1.flat,135x135,075,f.jpg",
-      "mediumImage": "http://ih1.redbubble.net/work.26583.1.flat,300x300,075,f.jpg",
-      "largeImage": "http://ih1.redbubble.net/work.26583.1.flat,550x550,075,f.jpg"
-    }
-  },
-  {
     "externalId": "2729606",
     "namespace": "test",
     "exif": {
@@ -62,6 +49,19 @@
       "smallImage": "http://ih1.redbubble.net/work.2729606.1.flat,135x135,075,f.jpg",
       "mediumImage": "http://ih1.redbubble.net/work.2729606.1.flat,300x300,075,f.jpg",
       "largeImage": "http://ih1.redbubble.net/work.2729606.1.flat,550x550,075,f.jpg"
+    }
+  },
+  {
+    "externalId": "2828069",
+    "namespace": "test",
+    "exif": {
+      "model": "SLP1000SE",
+      "make": "FUJI PHOTO FILM CO., LTD."
+    },
+    "images": {
+      "smallImage": "http://ih1.redbubble.net/work.2828069.1.flat,135x135,075,f.jpg",
+      "mediumImage": "http://ih1.redbubble.net/work.2828069.1.flat,300x300,075,f.jpg",
+      "largeImage": "http://ih1.redbubble.net/work.2828069.1.flat,550x550,075,f.jpg"
     }
   }
 ]

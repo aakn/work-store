@@ -5,8 +5,10 @@ import com.google.inject.Singleton;
 
 import com.aakn.workstore.work.dto.WorksRequest;
 import com.aakn.workstore.work.query.GetMakeNamesQuery;
+import com.aakn.workstore.work.query.GetModelNamesQuery;
 import com.aakn.workstore.work.query.GetWorksQuery;
 import com.aakn.workstore.work.view.IndexView;
+import com.aakn.workstore.work.view.MakeView;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -26,11 +28,14 @@ public class WorkViewResource {
 
   private final GetWorksQuery getWorksQuery;
   private final GetMakeNamesQuery getMakeNamesQuery;
+  private final GetModelNamesQuery getModelNamesQuery;
 
   @Inject
-  public WorkViewResource(GetWorksQuery getWorksQuery, GetMakeNamesQuery getMakeNamesQuery) {
+  public WorkViewResource(GetWorksQuery getWorksQuery, GetMakeNamesQuery getMakeNamesQuery,
+                          GetModelNamesQuery getModelNamesQuery) {
     this.getWorksQuery = getWorksQuery;
     this.getMakeNamesQuery = getMakeNamesQuery;
+    this.getModelNamesQuery = getModelNamesQuery;
   }
 
   @GET
@@ -39,6 +44,22 @@ public class WorkViewResource {
     IndexView view = new IndexView();
     view.setNamespace(namespace);
     view.setWorks(getWorksQuery.apply(new WorksRequest().namespace(namespace)));
+    view.setMakeNames(getMakeNamesQuery.apply(namespace));
+    return view;
+  }
+
+  @GET
+  @Path("/make/{make}")
+  @UnitOfWork
+  public MakeView getMakePage(@PathParam("namespace") String namespace,
+                               @PathParam("make") String make) {
+    MakeView view = new MakeView();
+    view.setMake(make);
+    view.setNamespace(namespace);
+    view.setWorks(getWorksQuery.apply(new WorksRequest()
+                                          .namespace(namespace)
+                                          .make(make)));
+    view.setModelNames(getModelNamesQuery.apply(namespace, make));
     view.setMakeNames(getMakeNamesQuery.apply(namespace));
     return view;
   }

@@ -1,17 +1,11 @@
 package com.aakn.workstore.work.view;
 
-import com.aakn.workstore.work.dto.NamesResponse;
-import com.aakn.workstore.work.dto.WorksResponse;
-
-import io.dropwizard.views.View;
 import lombok.Data;
 
 @Data
-public class IndexView extends View {
+public class IndexView extends BaseView {
 
-  private WorksResponse works;
-  private NamesResponse makeNames;
-  private String namespace;
+  private String type = "index";
 
   public IndexView() {
     super("index.ftl");

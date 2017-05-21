@@ -1,4 +1,4 @@
-<#-- @ftlvariable name="" type="com.aakn.workstore.work.view.IndexView" -->
+<#-- @ftlvariable name="" type="com.aakn.workstore.work.view.MakeView" -->
 <!DOCTYPE html>
 <html lang="en">
 <#include "head.ftl">
@@ -9,8 +9,8 @@
         <div class="col-md-4">
             <div>
                 <div class="list-group">
-                <#list makeNames.names as make>
-                    <a href="/${namespace}/works/make/${make}" class="list-group-item">${make?capitalize?html}</a>
+                <#list modelNames.names as model>
+                    <a href="/${namespace}/works/make/${make}/model/${model}" class="list-group-item">${model?html}</a>
                 </#list>
                 </div>
             </div>
