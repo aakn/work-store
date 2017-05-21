@@ -12,14 +12,17 @@ import com.hubspot.dropwizard.guice.GuiceBundle;
 import org.glassfish.jersey.logging.LoggingFeature;
 
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import io.dropwizard.Application;
+import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import io.dropwizard.views.ViewBundle;
 import lombok.extern.slf4j.Slf4j;
+
+import static java.util.logging.Level.INFO;
+import static java.util.logging.Logger.getLogger;
+import static org.glassfish.jersey.logging.LoggingFeature.Verbosity.PAYLOAD_ANY;
 
 @Slf4j
 public class ManagerApplication extends Application<ApplicationConfiguration> {
@@ -51,14 +54,14 @@ public class ManagerApplication extends Application<ApplicationConfiguration> {
         return config.getViewConfiguration();
       }
     });
+    bootstrap.addBundle(new AssetsBundle("/assets", "/static"));
   }
 
   @Override
   public void run(ApplicationConfiguration configuration, Environment environment)
       throws Exception {
     log.info("Application has started!!");
-    environment.jersey().register(new LoggingFeature(Logger.getLogger(LoggingFeature.class.getName()),
-                                                     Level.INFO, LoggingFeature.Verbosity.PAYLOAD_ANY,
-                                                     30 * 1024));
+    environment.jersey().register(new LoggingFeature(getLogger(LoggingFeature.class.getName()),
+                                                     INFO, PAYLOAD_ANY, 30 * 1024));
   }
 }
