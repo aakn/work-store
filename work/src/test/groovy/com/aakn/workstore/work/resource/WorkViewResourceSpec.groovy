@@ -1,7 +1,7 @@
 package com.aakn.workstore.work.resource
 
-import com.aakn.workstore.work.dto.WorksRequest
-import com.aakn.workstore.work.dto.WorksResponse
+import com.aakn.workstore.work.query.GetMakeNamesQuery
+import com.aakn.workstore.work.query.GetWorksQuery
 import com.codahale.metrics.MetricRegistry
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.squarespace.jersey2.guice.JerseyGuiceUtils
@@ -11,18 +11,16 @@ import io.dropwizard.views.ViewMessageBodyWriter
 import org.junit.Rule
 import spock.lang.Specification
 
-import javax.ws.rs.core.MediaType
-
-import static io.dropwizard.testing.FixtureHelpers.fixture
-
 class WorkViewResourceSpec extends Specification {
+
+  private GetWorksQuery getWorksQuery = Mock()
+  private GetMakeNamesQuery getMakeNamesQuery = Mock()
 
   @Rule
   ResourceTestRule resources = ResourceTestRule.builder()
-    .addResource(new WorkViewResource())
+    .addResource(new WorkViewResource(getWorksQuery, getMakeNamesQuery))
     .addProvider(new ViewMessageBodyWriter(new MetricRegistry()))
     .build()
-
   private static ObjectMapper mapper
 
   // fixing the service locator issue as per https://github.com/HubSpot/dropwizard-guice/issues/95#issuecomment-274851181
