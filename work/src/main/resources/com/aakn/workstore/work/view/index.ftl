@@ -4,13 +4,19 @@
 <#include "head.ftl">
 <body>
 <div class="container">
-<#include "page-header.ftl">
+    <div class="row">
+        <#include "page-header.ftl">
+        <ol class="breadcrumb">
+            <li class="active">Home</li>
+        </ol>
+    </div>
     <div class="row">
         <div class="col-md-4">
             <div>
                 <div class="list-group">
                 <#list makeNames.names as make>
-                    <a href="/${namespace}/works/make/${make}" class="list-group-item">${make?capitalize?html}</a>
+                    <a href="/${namespace}/works/make/${make}"
+                       class="list-group-item">${make?capitalize?html}</a>
                 </#list>
                 </div>
             </div>

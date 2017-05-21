@@ -12,7 +12,6 @@ public abstract class BaseView extends View {
   private String type;
   private WorksResponse works;
   private String namespace;
-  private NamesResponse makeNames;
 
   public BaseView(String templateName) {
     super(templateName);

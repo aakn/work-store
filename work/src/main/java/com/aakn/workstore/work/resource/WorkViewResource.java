@@ -9,6 +9,7 @@ import com.aakn.workstore.work.query.GetModelNamesQuery;
 import com.aakn.workstore.work.query.GetWorksQuery;
 import com.aakn.workstore.work.view.IndexView;
 import com.aakn.workstore.work.view.MakeView;
+import com.aakn.workstore.work.view.ModelView;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -52,7 +53,7 @@ public class WorkViewResource {
   @Path("/make/{make}")
   @UnitOfWork
   public MakeView getMakePage(@PathParam("namespace") String namespace,
-                               @PathParam("make") String make) {
+                              @PathParam("make") String make) {
     MakeView view = new MakeView();
     view.setMake(make);
     view.setNamespace(namespace);
@@ -60,7 +61,26 @@ public class WorkViewResource {
                                           .namespace(namespace)
                                           .make(make)));
     view.setModelNames(getModelNamesQuery.apply(namespace, make));
-    view.setMakeNames(getMakeNamesQuery.apply(namespace));
+    return view;
+  }
+
+  @GET
+  @Path("/make/{make}/model/{model}")
+  @UnitOfWork
+  public ModelView getModelPage(@PathParam("namespace") String namespace,
+                               @PathParam("make") String make,
+                               @PathParam("model") String model) {
+    ModelView view = new ModelView();
+    view.setNamespace(namespace);
+    view.setMake(make);
+    view.setModel(model);
+    view.setWorks(getWorksQuery.apply(new WorksRequest()
+                                          .namespace(namespace)
+                                          .model(model)
+                                          .make(make)
+                                          .page(new WorksRequest.Page()
+                                                    .pageSize(100))));
+    view.setModelNames(getModelNamesQuery.apply(namespace, make));
     return view;
   }
 }

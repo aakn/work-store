@@ -8,16 +8,17 @@
     <#include "page-header.ftl">
         <ol class="breadcrumb">
             <li><a href="/${namespace}/works">Home</a></li>
-            <li class="active">${make?capitalize?html}</li>
+            <li><a href="/${namespace}/works/make/${make}">${make?capitalize?html}</a></li>
+            <li class="active">${model?html}</li>
         </ol>
     </div>
     <div class="row">
         <div class="col-md-4">
             <div>
                 <div class="list-group">
-                <#list modelNames.names as model>
-                    <a href="/${namespace}/works/make/${make}/model/${model}"
-                       class="list-group-item">${model?html}</a>
+                <#list modelNames.names as name>
+                        <a href="/${namespace}/works/make/${make}/model/${name}"
+                        class=<#if name == model>"list-group-item active"<#else>"list-group-item"</#if>>${name?html}</a>
                 </#list>
                 </div>
             </div>

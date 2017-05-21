@@ -62,11 +62,29 @@ class WorkViewResourceSpec extends Specification {
       .make("LEICA")
     WorksResponse expected = mapper.readValue(fixture("fixtures/get_works/expected_make_response.json"), WorksResponse.class)
     getWorksQuery.apply(request) >> expected
-    getMakeNamesQuery.apply("test") >> new NamesResponse(names: ["LEICA", "NIKON", "CANON"])
     getModelNamesQuery.apply("test", "LEICA") >> new NamesResponse(names: ["D-LUX 3", "D-LUX 4"])
 
     when:
     def response = resources.target("/test/works/make/LEICA").request().get()
+
+    then:
+    response.status == 200
+  }
+
+  def "should render the model page"() {
+    given:
+    WorksRequest request = new WorksRequest()
+      .namespace("test")
+      .make("LEICA")
+      .model("D-LUX 3")
+      .page(new WorksRequest.Page()
+      .pageSize(100))
+    WorksResponse expected = mapper.readValue(fixture("fixtures/get_works/expected_model_response.json"), WorksResponse.class)
+    getWorksQuery.apply(request) >> expected
+    getModelNamesQuery.apply("test", "LEICA") >> new NamesResponse(names: ["D-LUX 3", "D-LUX 4"])
+
+    when:
+    def response = resources.target("/test/works/make/LEICA/model/D-LUX 3").request().get()
 
     then:
     response.status == 200

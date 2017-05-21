@@ -10,8 +10,8 @@ import lombok.Data;
 public class MakeView extends BaseView {
 
   private String type = "make";
-  private NamesResponse modelNames;
   private String make;
+  private NamesResponse modelNames;
 
   public MakeView() {
     super("make.ftl");
