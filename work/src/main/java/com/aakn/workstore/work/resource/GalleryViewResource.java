@@ -25,6 +25,10 @@ import io.dropwizard.hibernate.UnitOfWork;
 import lombok.extern.slf4j.Slf4j;
 
 
+/**
+ * @exclude
+ */
+@SuppressWarnings("javadoc")
 @Path("/gallery/{namespace}")
 @Slf4j
 @Singleton

@@ -29,7 +29,11 @@ public class BatchResource {
     this.processBatchRequestAction = processBatchRequestAction;
   }
 
-
+  /**
+   * @responseMessage 202 accepted
+   * @responseMessage 400 bad request
+   */
+  @SuppressWarnings("javadoc")
   @UnitOfWork
   @POST
   @Consumes(MediaType.APPLICATION_JSON)

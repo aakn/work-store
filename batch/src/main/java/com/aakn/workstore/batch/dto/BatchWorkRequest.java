@@ -19,7 +19,7 @@ public class BatchWorkRequest {
   @NotEmpty
   private String directory;
 
-  public URI getUrl() {
+  public URI url() {
     return UriBuilder.fromUri(url).build();
   }
 }

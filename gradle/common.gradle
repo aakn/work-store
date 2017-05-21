@@ -1,2 +1,3 @@
 apply from: file("gradle/repositories.gradle")
 apply from: file("gradle/dropwizard.gradle")
+apply from: file("gradle/swagger.gradle")

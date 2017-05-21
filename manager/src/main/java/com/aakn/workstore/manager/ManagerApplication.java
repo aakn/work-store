@@ -55,6 +55,7 @@ public class ManagerApplication extends Application<ApplicationConfiguration> {
       }
     });
     bootstrap.addBundle(new AssetsBundle("/assets", "/static"));
+    bootstrap.addBundle(new AssetsBundle("/apidocs", "/apidocs", "index.html", "/apidocs"));
   }
 
   @Override

@@ -28,7 +28,7 @@ public class ProcessBatchRequestAction implements Action<BatchWorkRequest> {
 
   @Override
   public void accept(BatchWorkRequest batchWorkRequest) {
-    Works works = externalWorkClient.getWorks(batchWorkRequest.getUrl());
+    Works works = externalWorkClient.getWorks(batchWorkRequest.url());
     persistWorks(works, batchWorkRequest);
   }
 
