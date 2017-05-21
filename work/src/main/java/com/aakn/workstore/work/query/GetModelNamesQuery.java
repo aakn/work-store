@@ -10,6 +10,9 @@ import com.aakn.workstore.work.repository.WorkRepository;
 
 import java.util.List;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Singleton
 public class GetModelNamesQuery implements BiQuery<String, String, NamesResponse> {
 
@@ -22,6 +25,7 @@ public class GetModelNamesQuery implements BiQuery<String, String, NamesResponse
 
   @Override
   public NamesResponse apply(String namespace, String make) {
+    log.info("getting the models for {} and {}", namespace, make);
     List<String> uniqueMakeNames = workRepository.getUniqueModelNames(namespace, make);
     NamesResponse response = new NamesResponse();
     response.setNames(uniqueMakeNames);

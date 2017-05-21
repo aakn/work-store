@@ -9,6 +9,9 @@ import com.aakn.workstore.work.repository.WorkRepository;
 
 import java.util.List;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Singleton
 public class GetMakeNamesQuery implements Query<String, NamesResponse> {
 
@@ -21,6 +24,7 @@ public class GetMakeNamesQuery implements Query<String, NamesResponse> {
 
   @Override
   public NamesResponse apply(String namespace) {
+    log.info("getting the makes for {}", namespace);
     List<String> uniqueMakeNames = workRepository.getUniqueMakeNames(namespace);
     NamesResponse response = new NamesResponse();
     response.setNames(uniqueMakeNames);

@@ -12,6 +12,9 @@ import com.aakn.workstore.work.repository.WorkRepository;
 
 import java.util.List;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Singleton
 public class GetWorksQuery implements Query<WorksRequest, WorksResponse> {
 
@@ -26,6 +29,7 @@ public class GetWorksQuery implements Query<WorksRequest, WorksResponse> {
   }
 
   public WorksResponse apply(WorksRequest worksRequest) {
+    log.info("request to get works: {}", worksRequest);
     List<Work> workEntities = workRepository.getWorks(worksRequest);
     return workEntityToResponseFunction.apply(workEntities);
   }

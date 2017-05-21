@@ -10,6 +10,7 @@ logging:
   level: INFO
   loggers:
     com.aakn.workstore: DEBUG
+    org.hibernate: ERROR
   appenders:
     - type: console
 

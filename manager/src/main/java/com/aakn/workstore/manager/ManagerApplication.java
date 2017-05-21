@@ -22,7 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import static java.util.logging.Level.INFO;
 import static java.util.logging.Logger.getLogger;
-import static org.glassfish.jersey.logging.LoggingFeature.Verbosity.PAYLOAD_ANY;
+import static org.glassfish.jersey.logging.LoggingFeature.Verbosity.HEADERS_ONLY;
 
 @Slf4j
 public class ManagerApplication extends Application<ApplicationConfiguration> {
@@ -62,6 +62,6 @@ public class ManagerApplication extends Application<ApplicationConfiguration> {
       throws Exception {
     log.info("Application has started!!");
     environment.jersey().register(new LoggingFeature(getLogger(LoggingFeature.class.getName()),
-                                                     INFO, PAYLOAD_ANY, 30 * 1024));
+                                                     INFO, HEADERS_ONLY, 1 * 1024));
   }
 }

@@ -35,7 +35,7 @@ public class ExternalWorkClientModule extends AbstractModule {
         .build("client");
 
     client.register(new LoggingFeature(Logger.getLogger(LoggingFeature.class.getName()),
-                                       Level.INFO, LoggingFeature.Verbosity.PAYLOAD_ANY,
+                                       Level.INFO, LoggingFeature.Verbosity.PAYLOAD_TEXT,
                                        5 * 1024));
     return client;
   }
