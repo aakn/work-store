@@ -5,7 +5,7 @@ import com.google.inject.AbstractModule;
 import com.aakn.workstore.work.repository.WorkRepository;
 import com.aakn.workstore.work.repository.impl.HibernateWorkRepository;
 import com.aakn.workstore.work.resource.WorkApiResource;
-import com.aakn.workstore.work.resource.WorkViewResource;
+import com.aakn.workstore.work.resource.GalleryViewResource;
 
 public class WorkModule extends AbstractModule {
 
@@ -13,6 +13,6 @@ public class WorkModule extends AbstractModule {
   protected void configure() {
     bind(WorkRepository.class).to(HibernateWorkRepository.class);
     bind(WorkApiResource.class);
-    bind(WorkViewResource.class);
+    bind(GalleryViewResource.class);
   }
 }

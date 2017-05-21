@@ -20,7 +20,7 @@ import spock.lang.Specification
 
 import static io.dropwizard.testing.FixtureHelpers.fixture
 
-class WorkViewResourceSpec extends Specification {
+class GalleryViewResourceSpec extends Specification {
 
   private GetWorksQuery getWorksQuery = Mock()
   private GetMakeNamesQuery getMakeNamesQuery = Mock()
@@ -28,7 +28,7 @@ class WorkViewResourceSpec extends Specification {
 
   @Rule
   ResourceTestRule resources = ResourceTestRule.builder()
-    .addResource(new WorkViewResource(getWorksQuery, getMakeNamesQuery, getModelNamesQuery))
+    .addResource(new GalleryViewResource(getWorksQuery, getMakeNamesQuery, getModelNamesQuery))
     .addProvider(new ViewMessageBodyWriter(new MetricRegistry(), ImmutableList.of(buildRenderer())))
     .addProvider(new ViewRenderExceptionMapper())
     .build()
@@ -49,7 +49,7 @@ class WorkViewResourceSpec extends Specification {
     getMakeNamesQuery.apply("test") >> new NamesResponse(names: ["LEICA", "NIKON", "CANON"])
 
     when:
-    def response = resources.target("/test/works").request().get()
+    def response = resources.target("/gallery/test").request().get()
 
     then:
     response.status == 200
@@ -65,7 +65,7 @@ class WorkViewResourceSpec extends Specification {
     getModelNamesQuery.apply("test", "LEICA") >> new NamesResponse(names: ["D-LUX 3", "D-LUX 4"])
 
     when:
-    def response = resources.target("/test/works/make/LEICA").request().get()
+    def response = resources.target("/gallery/test/make/LEICA").request().get()
 
     then:
     response.status == 200
@@ -84,7 +84,7 @@ class WorkViewResourceSpec extends Specification {
     getModelNamesQuery.apply("test", "LEICA") >> new NamesResponse(names: ["D-LUX 3", "D-LUX 4"])
 
     when:
-    def response = resources.target("/test/works/make/LEICA/model/D-LUX 3").request().get()
+    def response = resources.target("/gallery/test/model/D-LUX 3").queryParam("make", "LEICA").request().get()
 
     then:
     response.status == 200

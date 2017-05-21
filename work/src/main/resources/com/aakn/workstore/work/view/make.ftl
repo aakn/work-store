@@ -7,7 +7,7 @@
     <div class="row">
     <#include "page-header.ftl">
         <ol class="breadcrumb">
-            <li><a href="/${namespace}/works">Home</a></li>
+            <li><a href="/gallery/${namespace}">Home</a></li>
             <li class="active">${make?capitalize?html}</li>
         </ol>
     </div>
@@ -16,7 +16,7 @@
             <div>
                 <div class="list-group">
                 <#list modelNames.names as model>
-                    <a href="/${namespace}/works/make/${make}/model/${model}"
+                    <a href="/gallery/${namespace}/model/${model}?make=${make}"
                        class="list-group-item">${model?html}</a>
                 </#list>
                 </div>

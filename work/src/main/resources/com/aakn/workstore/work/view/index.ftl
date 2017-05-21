@@ -15,7 +15,7 @@
             <div>
                 <div class="list-group">
                 <#list makeNames.names as make>
-                    <a href="/${namespace}/works/make/${make}"
+                    <a href="/gallery/${namespace}/make/${make}"
                        class="list-group-item">${make?capitalize?html}</a>
                 </#list>
                 </div>

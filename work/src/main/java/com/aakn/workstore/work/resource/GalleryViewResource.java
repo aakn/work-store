@@ -11,29 +11,33 @@ import com.aakn.workstore.work.view.IndexView;
 import com.aakn.workstore.work.view.MakeView;
 import com.aakn.workstore.work.view.ModelView;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
+import javax.validation.Valid;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import io.dropwizard.hibernate.UnitOfWork;
 import lombok.extern.slf4j.Slf4j;
 
 
-@Path("/{namespace}/works")
+@Path("/gallery/{namespace}")
 @Slf4j
 @Singleton
 @Produces(MediaType.TEXT_HTML)
-public class WorkViewResource {
+public class GalleryViewResource {
 
   private final GetWorksQuery getWorksQuery;
   private final GetMakeNamesQuery getMakeNamesQuery;
   private final GetModelNamesQuery getModelNamesQuery;
 
   @Inject
-  public WorkViewResource(GetWorksQuery getWorksQuery, GetMakeNamesQuery getMakeNamesQuery,
-                          GetModelNamesQuery getModelNamesQuery) {
+  public GalleryViewResource(GetWorksQuery getWorksQuery, GetMakeNamesQuery getMakeNamesQuery,
+                             GetModelNamesQuery getModelNamesQuery) {
     this.getWorksQuery = getWorksQuery;
     this.getMakeNamesQuery = getMakeNamesQuery;
     this.getModelNamesQuery = getModelNamesQuery;
@@ -65,11 +69,11 @@ public class WorkViewResource {
   }
 
   @GET
-  @Path("/make/{make}/model/{model}")
+  @Path("/model/{model}")
   @UnitOfWork
   public ModelView getModelPage(@PathParam("namespace") String namespace,
-                               @PathParam("make") String make,
-                               @PathParam("model") String model) {
+                                @Valid @NotEmpty @QueryParam("make") String make,
+                                @PathParam("model") String model) {
     ModelView view = new ModelView();
     view.setNamespace(namespace);
     view.setMake(make);
