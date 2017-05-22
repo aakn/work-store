@@ -69,7 +69,7 @@ exception. If you want to disable this, this can be done by changing the seedDat
 
 UI can be accessed at: http://localhost:3000/gallery/{directory}
 
-For example: if you've set the directory as `redbubble` while populating the data, 
+For example: if you want to access the `redbubble` directory (seeded by default), 
 then the URL will be http://localhost:3000/gallery/redbubble
  
 #### API documentation
