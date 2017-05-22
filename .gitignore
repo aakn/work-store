@@ -5,6 +5,8 @@
 ### Java template
 # Compiled class file
 *.class
+classes/
+build/
 
 # Log file
 *.log
