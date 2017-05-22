@@ -17,8 +17,8 @@ logging:
 clientConfiguration:
   minThreads: 1
   maxThreads: 8
-  timeout: 2s
-  connectionTimeout: 2s
+  timeout: 5s
+  connectionTimeout: 10s
 
 databaseConfiguration:
   driverClass: org.h2.Driver
