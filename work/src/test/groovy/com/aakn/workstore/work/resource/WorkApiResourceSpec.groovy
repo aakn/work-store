@@ -45,8 +45,7 @@ class WorkApiResourceSpec extends Specification {
     getWorksQuery.apply(request) >> expected
 
     when:
-    def response = resources.target("/api/works")
-      .queryParam("namespace", "test")
+    def response = resources.target("/api/works/test/filter")
       .queryParam("page_size", 5)
       .queryParam("page_number", 2)
       .request().get()
@@ -68,8 +67,7 @@ class WorkApiResourceSpec extends Specification {
     getWorksQuery.apply(request) >> expected
 
     when:
-    def response = resources.target("/api/works")
-      .queryParam("namespace", "test")
+    def response = resources.target("/api/works/test/filter")
       .queryParam("make", "LEICA")
       .queryParam("page_size", 5)
       .queryParam("page_number", 2)
@@ -93,8 +91,7 @@ class WorkApiResourceSpec extends Specification {
     getWorksQuery.apply(request) >> expected
 
     when:
-    def response = resources.target("/api/works")
-      .queryParam("namespace", "test")
+    def response = resources.target("/api/works/test/filter")
       .queryParam("make", "LEICA")
       .queryParam("model", "D-LUX 3")
       .queryParam("page_size", 5)
@@ -119,8 +116,7 @@ class WorkApiResourceSpec extends Specification {
     getWorksQuery.apply(request) >> expected
 
     when:
-    def response = resources.target("/api/works")
-      .queryParam("namespace", "test")
+    def response = resources.target("/api/works/test/filter")
       .queryParam("make", "LEICA")
       .queryParam("model", "D-LUX 3")
       .request().get()
@@ -130,25 +126,13 @@ class WorkApiResourceSpec extends Specification {
     response.readEntity(WorksResponse.class) == expected
   }
 
-  def "get works should throw up if namespace is absent"() {
-    when:
-    def response = resources.target("/api/works")
-      .queryParam("make", "LEICA")
-      .queryParam("model", "D-LUX 3")
-      .request().get()
-
-    then:
-    response.status == 400
-  }
-
   def "get make names should return a list of names"() {
     given:
     String namespace = "test"
     getMakeNamesQuery.apply(namespace) >> new NamesResponse(names: ["LEICA", "NIKON", "CANON"])
 
     when:
-    def response = resources.target("/api/works/make_names")
-      .queryParam("namespace", "test")
+    def response = resources.target("/api/works/test/makes")
       .request().get()
 
     then:
@@ -157,20 +141,12 @@ class WorkApiResourceSpec extends Specification {
 
   }
 
-  def "get make names should throw up if namespace is absent"() {
-    when:
-    def response = resources.target("/api/works/make_names").request().get()
-
-    then:
-    response.status == 400
-  }
-
   def "get model names should return a list of names"() {
     given:
     getModelNamesQuery.apply("test", "LEICA") >> new NamesResponse(names: ["D-LUX-3"])
 
     when:
-    def response = resources.target("/api/works/model_names")
+    def response = resources.target("/api/works/test/models")
       .queryParam("namespace", "test")
       .queryParam("make", "LEICA")
       .request().get()
@@ -181,20 +157,9 @@ class WorkApiResourceSpec extends Specification {
 
   }
 
-  def "get model names should throw up if namespace is absent"() {
-    when:
-    def response = resources.target("/api/works/model_names")
-      .queryParam("make", "LEICA")
-      .request().get()
-
-    then:
-    response.status == 400
-  }
-
   def "get model names should throw up if make is absent"() {
     when:
-    def response = resources.target("/api/works/model_names")
-      .queryParam("namespace", "test")
+    def response = resources.target("/api/works/test/models")
       .request().get()
 
     then:

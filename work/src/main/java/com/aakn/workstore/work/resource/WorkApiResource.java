@@ -17,6 +17,7 @@ import javax.validation.Valid;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
@@ -24,7 +25,7 @@ import javax.ws.rs.core.MediaType;
 import io.dropwizard.hibernate.UnitOfWork;
 import lombok.extern.slf4j.Slf4j;
 
-@Path("/api/works")
+@Path("/api/works/{namespace}")
 @Slf4j
 @Singleton
 @Produces(MediaType.APPLICATION_JSON)
@@ -44,9 +45,10 @@ public class WorkApiResource {
 
   @UnitOfWork
   @GET
+  @Path("/filter")
   public WorksResponse getWorksForNamespaceMakeAndModel(@QueryParam("make") String make,
                                                         @QueryParam("model") String model,
-                                                        @Valid @NotEmpty @QueryParam("namespace") String namespace,
+                                                        @PathParam("namespace") String namespace,
                                                         @QueryParam("page_number") @DefaultValue("1") int pageNumber,
                                                         @QueryParam("page_size") @DefaultValue("10") int pageSize) {
     WorksRequest worksRequest = new WorksRequest()
@@ -61,17 +63,17 @@ public class WorkApiResource {
 
   @UnitOfWork
   @GET
-  @Path("/make_names")
-  public NamesResponse getMakeNames(@Valid @NotEmpty @QueryParam("namespace") String namespace) {
+  @Path("/makes")
+  public NamesResponse getMakeNames(@PathParam("namespace") String namespace) {
     return getMakeNamesQuery.apply(namespace);
   }
 
 
   @UnitOfWork
   @GET
-  @Path("/model_names")
+  @Path("/models")
   public NamesResponse getModelNames(@Valid @NotEmpty @QueryParam("make") String make,
-                                     @Valid @NotEmpty @QueryParam("namespace") String namespace) {
+                                     @PathParam("namespace") String namespace) {
     return getModelNamesQuery.apply(namespace, make);
   }
 }
