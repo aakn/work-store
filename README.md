@@ -40,14 +40,18 @@
 
 ### Running the application
 
-#### Starting the service
+#### Configuration
+
+The config file can be found at manager/config/development.yaml
+
+#### Starting
 ```bash
 ./gradlew run
 ```
 
 #### Populating the data
 
-The data has to be first populated using the batch processor
+The data can be populated using the batch processor
 
 ```bash
 curl -X POST "http://localhost:3000/api/works" -H 'content-type: application/json' -d '{
@@ -55,6 +59,11 @@ curl -X POST "http://localhost:3000/api/works" -H 'content-type: application/jso
   "directory": "redbubble"
 }'
 ```
+_Both the directory and the url are parameterized_
+
+**Note:** Seed data for the directory redbubble is populated (with the given API) if the app finds 
+it missing on the app startup. If you try to populate again for the same directory, it'll throw an 
+exception. If you want to disable this, this can be done by changing the seedDataConfiguration.enabled to false in the yaml file. 
 
 #### Accessing the UI
 
@@ -67,13 +76,9 @@ then the URL will be http://localhost:3000/gallery/redbubble
 
 API documentations (Swagger Docs) can be accessed at http://localhost:3000/apidocs/ . Here the namespace is nothing but the directory.
 
-#### Configuration
-
-the config file can be found at manager/config/development.yaml
-
 #### Cleaning the data
 
-In case data needs to be cleaned (let's say due to the unique constraint on external id and directory), this can be done by deleting the file in the `manager/db` folder
+In case data needs to be cleaned (let's say due to the unique constraint on external id and directory), this can be done by deleting the file in the `manager/db` folder. Thing to note here is, if seeding is enabled then the data under the redbubble directory will be populated again on startup. 
 
 ### Intellij Setup
 

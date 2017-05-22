@@ -1,5 +1,7 @@
 package com.aakn.workstore.manager.config;
 
+import com.aakn.workstore.batch.config.SeedDataConfiguration;
+
 import java.util.Map;
 
 import javax.validation.Valid;
@@ -24,4 +26,9 @@ public class ApplicationConfiguration extends Configuration {
   @Valid
   @NotNull
   private Map<String, Map<String, String>> viewConfiguration;
+
+  @Valid
+  @NotNull
+  private SeedDataConfiguration seedDataConfiguration;
+
 }

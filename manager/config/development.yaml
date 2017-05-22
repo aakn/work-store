@@ -17,8 +17,8 @@ logging:
 clientConfiguration:
   minThreads: 1
   maxThreads: 8
-  timeout: 5s
-  connectionTimeout: 10s
+  timeout: 15s
+  connectionTimeout: 15s
 
 databaseConfiguration:
   driverClass: org.h2.Driver
@@ -38,3 +38,8 @@ databaseConfiguration:
 viewConfiguration:
   .ftl:
     strict_syntax: yes
+
+seedDataConfiguration:
+  url: http://take-home-test.herokuapp.com/api/v1/works.xml
+  namespace: redbubble
+  enabled: true

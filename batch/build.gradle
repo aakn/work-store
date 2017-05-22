@@ -2,4 +2,5 @@ dependencies {
   compile project(":common")
   compile project(":client")
   compile project(":work")
+  testCompile project(path: ':common', configuration: 'testOutput')
 }

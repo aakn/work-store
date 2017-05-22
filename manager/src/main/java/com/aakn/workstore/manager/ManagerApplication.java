@@ -45,7 +45,8 @@ public class ManagerApplication extends Application<ApplicationConfiguration> {
             .addModule(new WorkModule())
             .addModule(new ExternalWorkClientModule())
             .setConfigClass(ApplicationConfiguration.class)
-            .enableAutoConfig("com.aakn.workstore.manager.config")
+            .enableAutoConfig("com.aakn.workstore.manager.config",
+                              "com.aakn.workstore.batch.config")
             .build(Stage.DEVELOPMENT);
     bootstrap.addBundle(guiceBundle);
     bootstrap.addBundle(new ViewBundle<ApplicationConfiguration>() {

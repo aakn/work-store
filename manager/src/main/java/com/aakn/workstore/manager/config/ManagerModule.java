@@ -5,6 +5,7 @@ import com.google.inject.Provider;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 
+import com.aakn.workstore.batch.config.SeedDataConfiguration;
 import com.aakn.workstore.common.exception.BaseExceptionMapper;
 
 import org.hibernate.SessionFactory;
@@ -31,5 +32,12 @@ public class ManagerModule extends AbstractModule {
   @Singleton
   public SessionFactory sessionFactory(CustomHibernateBundle hibernate) {
     return checkNotNull(hibernate.getSessionFactory());
+  }
+
+  @Provides
+  @Singleton
+  public SeedDataConfiguration providesSeedDataConfiguration(
+      Provider<ApplicationConfiguration> configuration) {
+    return configuration.get().getSeedDataConfiguration();
   }
 }
