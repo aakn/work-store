@@ -65,7 +65,7 @@ then the URL will be http://localhost:3000/gallery/redbubble
  
 #### API documentation
 
-API documentations (Swagger Docs) can be accessed at http://localhost:3000/apidocs/
+API documentations (Swagger Docs) can be accessed at http://localhost:3000/apidocs/ . Here the namespace is nothing but the directory.
 
 #### Configuration
 
@@ -73,7 +73,7 @@ the config file can be found at manager/config/development.yaml
 
 #### Cleaning the data
 
-In case data needs to be cleaned (let's say due to the unique constraint on external id and directory), this can be done by deleting the file in the `./db` folder
+In case data needs to be cleaned (let's say due to the unique constraint on external id and directory), this can be done by deleting the file in the `manager/db` folder
 
 ### Intellij Setup
 
