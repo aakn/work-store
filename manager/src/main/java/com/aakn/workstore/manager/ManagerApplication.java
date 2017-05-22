@@ -15,6 +15,8 @@ import java.util.Map;
 
 import io.dropwizard.Application;
 import io.dropwizard.assets.AssetsBundle;
+import io.dropwizard.bundles.redirect.PathRedirect;
+import io.dropwizard.bundles.redirect.RedirectBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import io.dropwizard.views.ViewBundle;
@@ -57,6 +59,7 @@ public class ManagerApplication extends Application<ApplicationConfiguration> {
     });
     bootstrap.addBundle(new AssetsBundle("/assets", "/static"));
     bootstrap.addBundle(new AssetsBundle("/apidocs", "/apidocs", "index.html", "/apidocs"));
+    bootstrap.addBundle(new RedirectBundle(new PathRedirect("/", "/gallery/redbubble")));
   }
 
   @Override
