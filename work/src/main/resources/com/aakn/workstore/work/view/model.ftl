@@ -17,7 +17,7 @@
             <div>
                 <div class="list-group">
                 <#list modelNames.names as name>
-                        <a href="/gallery/${namespace}/make/${make}/model/${name}"
+                        <a href="/gallery/${namespace}/model/${name}?make=${make}"
                         class=<#if name == model>"list-group-item active"<#else>"list-group-item"</#if>>${name?html}</a>
                 </#list>
                 </div>
