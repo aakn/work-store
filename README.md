@@ -19,18 +19,23 @@
 * This app uses H2 as the database and is accessed via Hibernate. 
 * H2 is an in-memory database with file persistence support.
 * H2 can be replaced by any database that has a JDBC driver (ex. MySQL or Postgres) with minimal changes.
-* I could've chosen to load from the said API on startup. But I've chosen to use a datastore here to allow the app to scale easily to larger data sets, without any major revamps. So, for a smaller data set I've chosen to go for H2.
+* I could've chosen to load from the said API on startup. But I've chosen to use a datastore here 
+to allow the app to scale easily to larger data sets, without any major revamps. So, for a smaller 
+data set I've chosen to go for H2.
 
 **Batch Processing**
 
 * The batch processor loads of the data from the given API synchronously.
-* But it should be easy to move this to an asynchronous implementation using Quartz, where a job can be submitted to be executed immediately.
+* But it should be easy to move this to an asynchronous implementation using Quartz, where a job 
+can be submitted to be executed immediately.
 
 **UI**
 
 * The UI is built using freemarker - a templating language and Bootstrap.
-* The html pages are rendered with the required data first at the server, and the final rendered html page is sent to the browser. No ajax calls were used.
-* Pagination hasn't been implemented in the UI, but the API's allow the user to configure the page number and page size.
+* The html pages are rendered with the required data first at the server, and the final rendered 
+html page is sent to the browser. No ajax calls were used.
+* Pagination hasn't been implemented in the UI, but the API's allow the user to configure the page 
+number and page size.
 
 ### Running the tests
 
@@ -51,7 +56,7 @@ The config file can be found at manager/config/development.yaml
 
 #### Populating the data
 
-The data can be populated using the batch processor
+The data can be populated using the batch processor API
 
 ```bash
 curl -X POST "http://localhost:3000/api/works" -H 'content-type: application/json' -d '{
@@ -61,9 +66,10 @@ curl -X POST "http://localhost:3000/api/works" -H 'content-type: application/jso
 ```
 _Both the directory and the url are parameterized_
 
-**Note:** Seed data for the directory redbubble is populated (with the given API) if the app finds 
+**Note:** Seed data for the directory redbubble is populated (with the given API), if the app finds 
 it missing on the app startup. If you try to populate again for the same directory, it'll throw an 
-exception. If you want to disable this, this can be done by changing the seedDataConfiguration.enabled to false in the yaml file. 
+exception. If you want to disable seeding, it can be done by setting the seedDataConfiguration.enabled 
+to false in the yaml file. 
 
 #### Accessing the UI
 
@@ -74,11 +80,14 @@ then the URL will be http://localhost:3000/gallery/redbubble
  
 #### API documentation
 
-API documentations (Swagger Docs) can be accessed at http://localhost:3000/apidocs/ . Here the namespace is nothing but the directory.
+API documentations (Swagger Docs) can be accessed at http://localhost:3000/apidocs/ . Here the 
+namespace is nothing but the directory.
 
 #### Cleaning the data
 
-In case data needs to be cleaned (let's say due to the unique constraint on external id and directory), this can be done by deleting the file in the `manager/db` folder. Thing to note here is, if seeding is enabled then the data under the redbubble directory will be populated again on startup. 
+In case data needs to be cleaned (let's say due to the unique constraint on external id and 
+directory), this can be done by deleting the file in the `manager/db` folder. Thing to note here is, 
+if seeding is enabled then the data under the redbubble directory will be populated again on startup. 
 
 ### Intellij Setup
 
