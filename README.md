@@ -71,6 +71,10 @@ API documentations (Swagger Docs) can be accessed at http://localhost:3000/apido
 
 the config file can be found at manager/config/development.yaml
 
+#### Cleaning the data
+
+In case data needs to be cleaned (let's say due to the unique constraint on external id and directory), this can be done by deleting the file in the `./db` folder
+
 ### Intellij Setup
 
 This project uses Lombok. Lombok Requires Annotation Processing.
