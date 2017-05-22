@@ -6,6 +6,7 @@ import com.google.inject.Singleton;
 import com.aakn.workstore.common.Query;
 import com.aakn.workstore.work.dto.WorksRequest;
 import com.aakn.workstore.work.dto.WorksResponse;
+import com.aakn.workstore.work.exception.WorksNotFoundException;
 import com.aakn.workstore.work.function.WorkEntityToResponseFunction;
 import com.aakn.workstore.work.model.Work;
 import com.aakn.workstore.work.repository.WorkRepository;
@@ -31,6 +32,12 @@ public class GetWorksQuery implements Query<WorksRequest, WorksResponse> {
   public WorksResponse apply(WorksRequest worksRequest) {
     log.info("request to get works: {}", worksRequest);
     List<Work> workEntities = workRepository.getWorks(worksRequest);
+
+    if (workEntities.isEmpty()) {
+      throw new WorksNotFoundException(worksRequest.namespace(), worksRequest.make(),
+                                       worksRequest.model());
+    }
+
     return workEntityToResponseFunction.apply(workEntities);
   }
 }

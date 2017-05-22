@@ -5,6 +5,8 @@ import com.google.inject.Provider;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 
+import com.aakn.workstore.common.exception.BaseExceptionMapper;
+
 import org.hibernate.SessionFactory;
 
 import io.dropwizard.client.JerseyClientConfiguration;
@@ -15,7 +17,7 @@ public class ManagerModule extends AbstractModule {
 
   @Override
   protected void configure() {
-
+    bind(BaseExceptionMapper.class);
   }
 
   @Provides

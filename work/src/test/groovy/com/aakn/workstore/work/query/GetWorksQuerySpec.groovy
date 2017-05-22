@@ -2,6 +2,7 @@ package com.aakn.workstore.work.query
 
 import com.aakn.workstore.work.dto.WorksRequest
 import com.aakn.workstore.work.dto.WorksResponse
+import com.aakn.workstore.work.exception.WorksNotFoundException
 import com.aakn.workstore.work.function.WorkEntityToResponseFunction
 import com.aakn.workstore.work.model.Work
 import com.aakn.workstore.work.repository.WorkRepository
@@ -37,6 +38,21 @@ class GetWorksQuerySpec extends Specification {
 
     expect:
     query.apply(request) == expected
+
+  }
+
+  def "should throw exception if no works found"() {
+    given:
+    String namespace = "test"
+    WorksRequest request = new WorksRequest()
+      .namespace(namespace)
+    1 * workRepository.getWorks(request) >> []
+
+    when:
+    query.apply(request)
+
+    then:
+    WorksNotFoundException e = thrown()
 
   }
 }
